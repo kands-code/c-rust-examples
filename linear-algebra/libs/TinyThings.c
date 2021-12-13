@@ -42,3 +42,24 @@ double powerNum(double num, int n) {
   }
   return res;
 }
+
+int getInversionNumber(int len, int *arr) {
+  int inversionNumber = 0;
+  for (int i = 0; i < len - 1; ++i) {
+    for (int j = i; j < len; ++j) {
+      if (arr[i] > arr[j])
+        ++inversionNumber;
+    }
+  }
+  return inversionNumber;
+}
+
+matrix *solveLinearFunctions(matrix *argM, matrix *valueV) {
+  // value vector must be a column vector
+  if (valueV->dim[1] != 1 || argM->dim[1] != valueV->dim[0]) {
+    printf("The definitions are not match!\n");
+    exit(EXIT_FAILURE);
+  }
+  // use x = A^-1 b
+  return matrixMultiply(matrixInverse(argM), valueV);
+}

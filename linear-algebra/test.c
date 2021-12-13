@@ -4,20 +4,15 @@
 #include <stdio.h>
 
 int main(void) {
-  double a[] = {1, -1, -1, 2, -1, -3, 3, 2, 5};
-  matrix *matA = matrixGetMatrixByArray(3, 3, a);
-  // print the original matrix
+  double a[] = {2, -1, -1, 1,  2, 1, 1, -2, 1, 4,
+                4, -6, 2,  -2, 4, 3, 6, -9, 7, 9};
+  matrix *matA = matrixGetMatrixByArray(4, 5, a);
+
   matrixPrint(matA);
-  puts("============");
-  // print the upright-triangle formed matrix
+
+  puts("=============");
+
   matrixPrint(matrixToUprightTriangleForm(matA));
-  puts("============");
-  // print the inverse matrix
-  matrixPrint(matrixInverse(matA));
-  puts("============");
-  // print the determinant of the matrix
-  printf("%.3f\n", matrixDeterminant(matA));
-  puts("============");
 
   return 0;
 }

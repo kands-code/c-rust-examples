@@ -6,6 +6,17 @@
 #include <stdbool.h>
 
 // --- some definition
+typedef char *str;
+
+// --- some macros
+
+#define equals(arg1, arg2)                                                     \
+  _Generic((arg1), \
+          char * : equalsForString, \
+          matrix * : equalsForMatrix, \
+          double : equalsForNum, \
+          default : equalsForNum\
+        )(arg1, arg2)
 
 // the minimum difference
 extern double eps;

@@ -9,19 +9,6 @@
 
 // --- some function implementations
 
-// === other part
-
-int getInversionNumber(int len, int *arr) {
-  int inversionNumber = 0;
-  for (int i = 0; i < len - 1; ++i) {
-    for (int j = i; j < len; ++j) {
-      if (arr[i] > arr[j])
-        ++inversionNumber;
-    }
-  }
-  return inversionNumber;
-}
-
 // === matrix part
 
 matrix *matrixInit(int i, int j) {
@@ -212,12 +199,13 @@ matrix *matrixToUprightTriangleForm(matrix *mat) {
   }
 
   // traverse the matrix
-  for (int i = 0; i < formatedMatrix->dim[1] - 1; ++i) {
+  for (int i = 0; i < formatedMatrix->dim[0] - 1; ++i) {
     // check the pivot whether a zero
-    if (equalsToZero(formatedMatrix->data[i * formatedMatrix->dim[0] + i])) {
+    if (equalsToZero(formatedMatrix->data[i * formatedMatrix->dim[1] + i])) {
       // exchange the line which element in i column is nonzero
       for (int r = i + 1; r < formatedMatrix->dim[0]; ++r) {
-        if (formatedMatrix->data[r * formatedMatrix->dim[1] + i] != 0) {
+        if (!equalsToZero(
+                formatedMatrix->data[r * formatedMatrix->dim[1] + i])) {
           matrixExchangeLine(formatedMatrix, i, r);
           // use factor to count
           factor *= -1;
@@ -227,7 +215,7 @@ matrix *matrixToUprightTriangleForm(matrix *mat) {
     }
     for (int j = i + 1; j < formatedMatrix->dim[0]; ++j) {
       // if the element in (j, i) is zero, then skip
-      if (equalsToZero(formatedMatrix->data[j * formatedMatrix->dim[0] + i]))
+      if (equalsToZero(formatedMatrix->data[j * formatedMatrix->dim[1] + i]))
         continue;
       // reduce
       double m = formatedMatrix->data[j * formatedMatrix->dim[1] + i] /

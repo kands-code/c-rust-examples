@@ -18,17 +18,7 @@ typedef struct __MATRIX {
   double *data;
 } matrix;
 
-typedef matrix *matp;
-
 // --- some functions
-
-// === other part
-
-// calculate the inversion number of an array
-// @param len : the length of the array
-// @param arr : int array, the array
-// @return : the inversion number of the array
-int getInversionNumber(int len, int *arr);
 
 // === matrix part
 
@@ -101,6 +91,7 @@ matrix *matrixMultiply(matrix *m1, matrix *m2);
 // @return : the determinant
 double matrixDeterminant(matrix *mat);
 
+// ## TODO Need Fix
 // transform a matrix to upright-triangle form
 // @param mat : the matrix
 // @return : a formated matrix
@@ -123,6 +114,13 @@ matrix *matrixAdjointMatrix(matrix *mat);
 // @return : the inverse matrix
 matrix *matrixInverse(matrix *mat);
 
+// ## TODO
+// get the rank of a matrix
+// @param mat : the matrix
+// @return : the rank of the matrix
+int matrixGetMatrixRank(matrix *mat);
+
+// ## TODO
 // the eigenvalues of a matrix
 // @param mat : the matrix
 // @return : all the eigenvalues
@@ -136,6 +134,7 @@ double *matrixEigenValues(matrix *mat);
 // @return : the dot product value
 double vectorDotProduct(matrix *v1, matrix *v2);
 
+// ## TODO
 // cross product of two vector
 // @param v1 : the first vector
 // @param v2 : the second vector

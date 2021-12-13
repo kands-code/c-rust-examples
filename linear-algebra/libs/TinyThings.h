@@ -9,7 +9,7 @@
 
 // --- some macros
 #define powerTT(m, n)                                                          \
-  _Generic((m), matp : powerMatrix, double : powerNum, default : powerNum)(m, n)
+  _Generic((m), matrix * : powerMatrix, default : powerNum)(m, n)
 
 // --- some functions
 
@@ -29,3 +29,15 @@ matrix *powerMatrix(matrix *mat, int n);
 // @param n : the times
 // @return : the power product
 double powerNum(double num, int n);
+
+// calculate the inversion number of an array
+// @param len : the length of the array
+// @param arr : int array, the array
+// @return : the inversion number of the array
+int getInversionNumber(int len, int *arr);
+
+// solve linear functions
+// @param argM : the argument matrix
+// @param valueV : the value vector
+// @return : the solves
+matrix *solveLinearFunctions(matrix *argM, matrix *valueV);

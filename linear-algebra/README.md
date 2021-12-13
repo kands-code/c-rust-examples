@@ -23,7 +23,6 @@ Some type aliases
 |name|alias|
 |:--:|:--:|
 |`__MATRIX`|`matrix`|
-|`matrix *`|`matp`|
 
 ### CONSTANT
 

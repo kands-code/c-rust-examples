@@ -11,15 +11,15 @@
 
 // === other part
 
-int getNumberOfInversions(int len, int *arr) {
-  int numberOfInversions = 0;
+int getInversionNumber(int len, int *arr) {
+  int inversionNumber = 0;
   for (int i = 0; i < len - 1; ++i) {
     for (int j = i; j < len; ++j) {
       if (arr[i] > arr[j])
-        ++numberOfInversions;
+        ++inversionNumber;
     }
   }
-  return numberOfInversions;
+  return inversionNumber;
 }
 
 // === matrix part

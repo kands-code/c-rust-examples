@@ -24,11 +24,11 @@ typedef matrix *matp;
 
 // === other part
 
-// calculate the number of inversions of an array
+// calculate the inversion number of an array
 // @param len : the length of the array
 // @param arr : int array, the array
-// @return : the number of inversions of the array
-int getNumberOfInversions(int len, int *arr);
+// @return : the inversion number of the array
+int getInversionNumber(int len, int *arr);
 
 // === matrix part
 

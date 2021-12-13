@@ -92,10 +92,4 @@ the output
 
 ## API
 
-|function|parameters|return|description|
-|:--:|:--:|:--:|:--:|
-|`getNumberOfInversions`|the length of array<br>`len : int`,<br>the array<br>`arr : int *`|the number of inversions of the array<br>`int`|calculate the number of inversions of an array|
-|`matrixInit`|rows<br>`i : int`,<br>columns<br>`j : int`|a matrix pointer<br>`matrix *`|matrix init|
-|`matrixGetDiagonalMatrix`|the size of the matrix<br>`len :int`<br>the diagonal of the matrix<br>`diag : double *`|a diagonal matrix<br>`matrix *`|get a diagonal matrix|
-|`matrixGetIndentityMatrix`|the size of the matrix<br>`len : int`|the identity matrix<br>`matrix *`|get an identity matrix|
-|`matrixGetMatrixByArray`|the first dimension, rows<br>`r : int`<br>the second dimension, columns<br>`c : int`<br>the array<br>`arr : double *`|the matrix<br>`matrix *`|init a matrix from an array|
+See source code, the comments are comprehensive

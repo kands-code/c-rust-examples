@@ -37,5 +37,5 @@ Some constants
 
 |function|parameters|return|description|
 |:--:|:--:|:--:|:--:|
-|`getNumberOfInversions`|`len : int`, `arr : int *`|the number of inversions of the array `int`|calculate the number of inversions of an array|
-|`matrixInit`|rows `i : int`, columns `j : int`|a matrix pointer `matrix *`|matrix init|
+|`getNumberOfInversions`|the length of array `len : int`,<br>the array `arr : int *`|the number of inversions of the array `int`|calculate the number of inversions of an array|
+|`matrixInit`|rows `i : int`,<br>columns `j : int`|a matrix pointer `matrix *`|matrix init|

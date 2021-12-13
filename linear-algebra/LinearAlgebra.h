@@ -53,7 +53,7 @@ matrix *matrixGetIndentityMatrix(int len);
 // @param r : the first dimension, rows
 // @param c : the second dimension, columns
 // @param arr : the array
-// @return L the matrix
+// @return : the matrix
 matrix *matrixGetMatrixByArray(int r, int c, double *arr);
 
 // print a matrix with precision

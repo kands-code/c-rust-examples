@@ -11,7 +11,7 @@
 // --- some definition
 
 // matrix type
-// @description : vector also a matrix
+// @description : vector is also a matrix
 //              which dim is [1, N] or [N, 1]
 typedef struct __MATRIX {
   int *dim;

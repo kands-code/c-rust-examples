@@ -46,7 +46,7 @@ int main(void) {
     double a[] = {1, -1, -1, 2, -1, -3, 3, 2, 5};
     matrix * matA = matrixGetMatrixByArray(3, 3, a);
     // print the original matrix
-    matrixPrint(mat);
+    matrixPrint(matA);
     puts("============");
     // print the upright-triangle formed matrix
     matrixPrint(matrixToUprightTriangleForm(matA));

@@ -13,8 +13,7 @@ The `struct` in this lib
 |struct|description|
 |:--:|:--:|
 |`__MATRIX`|The matrix struct|
-
-> The vector is also a matrix
+|`__VECTOR`|The vector struct|
 
 ### ALIAS
 
@@ -23,6 +22,7 @@ Some type aliases
 |name|alias|
 |:--:|:--:|
 |`__MATRIX`|`matrix`|
+|`__VECTOR`|`vector`|
 
 ### CONSTANT
 
@@ -40,8 +40,6 @@ The minimum test
 // -- test.c
 
 #include "LinearAlgebra.h"
-#include "libs/Eq.h"
-#include "libs/TinyThings.h"
 #include <stdio.h>
 
 int main(void) {
@@ -67,7 +65,7 @@ int main(void) {
 compiler
 
 ```bash
-gcc -o test test.c LinearAlgebra.c libs/Eq.c libs/TinyThings.c
+gcc -o test test.c LinearAlgebra.c
 ```
 
 the output
@@ -92,3 +90,5 @@ the output
 ## API
 
 See source code, the comments are comprehensive
+
+*if the orientations of two vectors are not equal, they cannot do vector calculate, must turn them into matrices*

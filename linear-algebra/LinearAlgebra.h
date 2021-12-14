@@ -10,15 +10,88 @@
 
 // --- some definition
 
+// the minimum difference
+extern double eps;
+
 // matrix type
-// @description : vector is also a matrix
-//              which dim is [1, N] or [N, 1]
 typedef struct __MATRIX {
   int *dim;
   double *data;
 } matrix;
 
+// vector type
+typedef struct __VECTOR {
+  int dim;
+  double *data;
+  // only 'r' or 'c'
+  char orient;
+} vector;
+
+// --- some macros
+
+// === Equals
+#define equalsT(m, n)                                                          \
+  _Generic((m), \
+          char * : equalsForString, \
+          matrix * : equalsForMatrix, \
+          vector * : equalsForVector, \
+          double : equalsForNum, \
+          int : equalsForIntegral, \
+          default : equalsForIntegral \
+        )(m, n)
+
+// === Power
+#define powerT(m, n)                                                           \
+  _Generic((m), \
+          matrix * : powerMatrix, \
+          double : powerNum, \
+          vector * : powerVector, \
+          default : powerNum \
+        )(m, n)
+
+// === MIN
+#define MIN(a, b) ((a) > (b) ? (b) : (a))
+// === MAX
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+
 // --- some functions
+
+// === equals part
+
+// judge whether num is equal to zero
+// @param num : the number
+// @return : true for zero, false for nonzero
+bool equalsToZero(double num);
+
+// judge whether the two numbers are equal
+// @param n1 : the first number
+// @param n2 : the second number
+// @return : true for equal, false for unequal
+bool equalsForNum(double n1, double n2);
+
+// judge whether the two strings are equal
+// @param s1 : the first strings
+// @param s2 : the second strings
+// @return : true for equal, false for unequal
+bool equalsForString(char *s1, char *s2);
+
+// judge whether the two matrix are equal
+// @param m1 : the first matrix
+// @param m2 : the second matrix
+// @return bool : true for equal, otherwise false
+bool equalsForMatrix(matrix *m1, matrix *m2);
+
+// judge whether the two integrals are equal
+// @param i1 : the first integral
+// @param i2 : the second integral
+// @return : true for equal and false for unequal
+bool equalsForIntegral(int i1, int i2);
+
+// judge whether the two vectors are equal
+// @param v1 : the first vector
+// @param v2 : the second vector
+// @return bool : true for equal, otherwise false
+bool equalsForVector(vector *v1, vector *v2);
 
 // === matrix part
 
@@ -80,18 +153,29 @@ matrix *matrixMultiplyWithNum(double num, matrix *mat);
 // @return : the sum
 matrix *matrixAddition(matrix *m1, matrix *m2);
 
+// subtraction of matrix
+// @param m1 : the first matrix
+// @param m2 : the second matrix
+// @return : the difference of the two matrix
+matrix *matrixSubtraction(matrix *m1, matrix *m2);
+
 // multiply two matrices
 // @param m1 : the first matrix
 // @param m2 : the second matrix
 // @return : the product
 matrix *matrixMultiply(matrix *m1, matrix *m2);
 
+// division of matrix
+// @param m1 : the first matrix
+// @param m2 : the second matrix
+// @return : the quotient
+matrix *matrixDivision(matrix *m1, matrix *m2);
+
 // calculate the determinant of a matrix
 // @param mat : the matrix
 // @return : the determinant
 double matrixDeterminant(matrix *mat);
 
-// ## TODO Need Fix
 // transform a matrix to upright-triangle form
 // @param mat : the matrix
 // @return : a formated matrix
@@ -114,11 +198,15 @@ matrix *matrixAdjointMatrix(matrix *mat);
 // @return : the inverse matrix
 matrix *matrixInverse(matrix *mat);
 
-// ## TODO
 // get the rank of a matrix
 // @param mat : the matrix
 // @return : the rank of the matrix
 int matrixGetMatrixRank(matrix *mat);
+
+// get the trace of a matrix
+// @param mat : the matrix
+// @return : the trace of the matrix
+double matrixGetMatrixTrace(matrix *mat);
 
 // ## TODO
 // the eigenvalues of a matrix
@@ -128,15 +216,99 @@ double *matrixEigenValues(matrix *mat);
 
 // === vector part
 
+// init a vector
+// @param len : the length of vector
+// @param o : the orientation
+// @return : the vector
+vector *vectorInit(int len, char o);
+
+// init a vector by an array
+// @param len : the length of vector
+// @param o : the orientation
+// @param arr : the array
+// @return : the vector
+vector *vectorGetVectorByArray(int len, char o, double *arr);
+
+// print vector with precision
+// @param vec : the vector
+// @param precision : the precision
+void vectorPrintWithPrecision(vector *vec, int precision);
+
+// print vector with a default precision
+// @param vec : the vector
+void vectorPrint(vector *vec);
+
+// addition of vector
+// @param v1 : the first vector
+// @param v2 : the second vector
+// @return : the sum of the two vectors
+vector *vectorAddition(vector *v1, vector *v2);
+
+// subtraction of vector
+// @param v1 : the first vector
+// @param v2 : the second vector
+// @return : the difference of the two vectors
+vector *vectorSubtraction(vector *v1, vector *v2);
+
 // dot product of two vectors
 // @param v1 : the first vector
 // @param v2 : the second vector
-// @return : the dot product value
-double vectorDotProduct(matrix *v1, matrix *v2);
+// @return : the result, vec(3)
+// @description : the orientation of vectors must be equal
+double vectorDotProduct(vector *v1, vector *v2);
 
-// ## TODO
 // cross product of two vector
 // @param v1 : the first vector
 // @param v2 : the second vector
 // @return : the cross product value
-matrix *vectorCrossProduct(matrix *v1, matrix *v2);
+// @description : the dimension must be 2 or 3
+//                the orientation of vectors must be equal
+vector *vectorCrossProduct(vector *v1, vector *v2);
+
+// === other part
+
+// return the absolute value of num
+// @param num : the num
+// @return : the absolute value
+double absT(double num);
+
+// return the power of matrix
+// @param mat : the matrix
+// @param n : the times
+// @return : the power product
+matrix *powerMatrix(matrix *mat, int n);
+
+// power of vector
+// powerT([a, b, c], n) => [a^n, b^n, c^n]
+// @param vec : the vector
+// @param n : the times
+// @return vector : the powered vector
+vector *powerVector(vector *vec, int n);
+
+// return the power of number
+// @param num : the number
+// @param n : the times
+// @return : the power product
+double powerNum(double num, int n);
+
+// calculate the inversion number of an array
+// @param len : the length of the array
+// @param arr : int array, the array
+// @return : the inversion number of the array
+int getInversionNumber(int len, int *arr);
+
+// solve linear functions
+// @param argM : the argument matrix
+// @param valueV : the value vector
+// @return : the solves
+matrix *solveLinearFunctions(matrix *argM, matrix *valueV);
+
+// turn a vector into a matrix
+// @param vec : the vector
+// @return matrix * : the matrix
+matrix *vectorToMatrix(vector *vec);
+
+// true a matrix into a vector
+// @param mat : the matrix
+// @return vector * : the vector
+vector *matrixToVector(matrix *mat);

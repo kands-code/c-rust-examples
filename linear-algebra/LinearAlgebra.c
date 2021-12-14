@@ -2,12 +2,61 @@
 
 // --- necessary includes
 
-#include "libs/Eq.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+// --- some definitions
+
+double eps = 1e-6;
+
 // --- some function implementations
+
+// === equals part
+
+bool equalsToZero(double num) {
+  // use abs and eps instead of "== 0"
+  if (absT(num) < eps)
+    return true;
+  return false;
+}
+
+bool equalsForNum(double n1, double n2) { return equalsToZero(n1 - n2); }
+
+bool equalsForString(char *s1, char *s2) {
+  int i = 0;
+  for (i = 0; *(s1 + i) != '\0' && *(s2 + i) != '\0'; ++i) {
+    if (*(s1 + i) != *(s2 + i)) {
+      return false;
+    }
+  }
+
+  if (*(s1 + i) == '\0' && *(s2 + i) == '\0')
+    return true;
+  return false;
+}
+
+bool equalsForMatrix(matrix *m1, matrix *m2) {
+  if (!equalsT(m1->dim[0], m2->dim[0]) || !equalsT(m1->dim[1], m2->dim[1]))
+    return false;
+  for (int i = 1; i < m1->dim[0] * m1->dim[1]; ++i) {
+    if (!equalsT(m1->data[i], m2->data[i]))
+      return false;
+  }
+  return true;
+}
+
+bool equalsForIntegral(int i1, int i2) { return i1 == i2; }
+
+bool equalsForVector(vector *v1, vector *v2) {
+  if (!equalsT(v1->dim, v2->dim) || !equalsT(v1->orient, v2->orient))
+    return false;
+  for (int i = 0; i < v1->dim; ++i) {
+    if (!equalsT(v1->data[i], v2->data[i]))
+      return false;
+  }
+  return true;
+}
 
 // === matrix part
 
@@ -59,19 +108,26 @@ matrix *matrixGetMatrixByArray(int r, int c, double *arr) {
 }
 
 void matrixPrintWithPrecision(matrix *mat, int precision) {
+  puts("matrix |>");
   // traverse the matrix
   for (int i = 0; i < mat->dim[0]; ++i) {
+    putchar('[');
     for (int j = 0; j < mat->dim[1]; ++j) {
       // print each element
-      printf("%.*f\t", precision, mat->data[i * mat->dim[1] + j]);
+      printf("%.*f\t", precision,
+             equalsToZero(mat->data[i * mat->dim[1] + j])
+                 ? 0
+                 : mat->data[i * mat->dim[1] + j]);
     }
     // get a new line
-    putchar('\n');
+    printf("]\n");
   }
+  putchar('\n');
 }
 
 void matrixPrint(matrix *mat) {
   // default precision is 3
+  // can be implementated by "%g"
   matrixPrintWithPrecision(mat, 3);
 }
 
@@ -116,21 +172,31 @@ matrix *matrixMultiplyWithNum(double num, matrix *mat) {
 
 matrix *matrixAddition(matrix *m1, matrix *m2) {
   // if the sizes are not equal, then they cannot do addition
-  if (m1->dim[0] != m2->dim[0] || m1->dim[1] != m2->dim[1]) {
+  if (!equalsT(m1->dim[0], m2->dim[0]) || !equalsT(m1->dim[1], m2->dim[1])) {
     printf("Dimensions are not match\n");
     exit(EXIT_FAILURE);
   }
   // get a matrix as the result
   matrix *res = matrixInit(m1->dim[0], m1->dim[1]);
   // traverse the two matrices
-  for (int i = 0; i < res->dim[0]; ++i) {
-    for (int j = 0; j < res->dim[j]; ++j) {
-      // add up the corresponding elements
-      res->data[i * res->dim[1] + j] =
-          m1->data[i * m1->dim[1] + j] + m2->data[i * m2->dim[1] + j];
-    }
+  for (int i = 0; i < res->dim[0] * res->dim[1]; ++i) {
+    // add up the corresponding elements
+    res->data[i] = m1->data[i] + m2->data[i];
   }
   // return the result
+  return res;
+}
+
+matrix *matrixSubtraction(matrix *m1, matrix *m2) {
+  // if the sizes are not equal, then they cannot do addition
+  if (!equalsT(m1->dim[0], m2->dim[0]) || !equalsT(m1->dim[1], m2->dim[1])) {
+    printf("Dimensions are not match\n");
+    exit(EXIT_FAILURE);
+  }
+  matrix *res = matrixInit(m1->dim[0], m2->dim[1]);
+  for (int i = 0; i < res->dim[0] * res->dim[1]; ++i) {
+    res->data[i] = m1->data[i] - m2->data[i];
+  }
   return res;
 }
 
@@ -154,6 +220,10 @@ matrix *matrixMultiply(matrix *m1, matrix *m2) {
   }
   // return the result
   return res;
+}
+
+matrix *matrixDivision(matrix *m1, matrix *m2) {
+  return matrixMultiply(m1, matrixInverse(m2));
 }
 
 double matrixDeterminant(matrix *mat) {
@@ -199,31 +269,54 @@ matrix *matrixToUprightTriangleForm(matrix *mat) {
   }
 
   // traverse the matrix
-  for (int i = 0; i < formatedMatrix->dim[0] - 1; ++i) {
+  for (int i = 0, bias = 0; i < formatedMatrix->dim[0] - 1; ++i) {
     // check the pivot whether a zero
-    if (equalsToZero(formatedMatrix->data[i * formatedMatrix->dim[1] + i])) {
+    if (equalsToZero(
+            formatedMatrix->data[i * formatedMatrix->dim[1] + i + bias])) {
       // exchange the line which element in i column is nonzero
       for (int r = i + 1; r < formatedMatrix->dim[0]; ++r) {
         if (!equalsToZero(
-                formatedMatrix->data[r * formatedMatrix->dim[1] + i])) {
+                formatedMatrix->data[r * formatedMatrix->dim[1] + i + bias])) {
           matrixExchangeLine(formatedMatrix, i, r);
+
+          /* print steps
+            puts("\n=============================");
+            printf("r%d <-> r%d\n", i + 1, r + 1);
+            matrixPrint(formatedMatrix);
+            puts("=============================\n");
+          */
+
           // use factor to count
           factor *= -1;
           break;
+        }
+        // >> some magic
+        if (r == formatedMatrix->dim[0] - 1) {
+          --i;
+          ++bias;
+          continue;
         }
       }
     }
     for (int j = i + 1; j < formatedMatrix->dim[0]; ++j) {
       // if the element in (j, i) is zero, then skip
-      if (equalsToZero(formatedMatrix->data[j * formatedMatrix->dim[1] + i]))
+      if (equalsToZero(
+              formatedMatrix->data[j * formatedMatrix->dim[1] + i + bias]))
         continue;
       // reduce
-      double m = formatedMatrix->data[j * formatedMatrix->dim[1] + i] /
-                 formatedMatrix->data[i * formatedMatrix->dim[1] + i];
-      for (int k = i; k < formatedMatrix->dim[1]; ++k) {
+      double m = formatedMatrix->data[j * formatedMatrix->dim[1] + i + bias] /
+                 formatedMatrix->data[i * formatedMatrix->dim[1] + i + bias];
+      for (int k = i + bias; k < formatedMatrix->dim[1]; ++k) {
         formatedMatrix->data[j * formatedMatrix->dim[1] + k] -=
             m * formatedMatrix->data[i * formatedMatrix->dim[1] + k];
       }
+
+      /* print steps
+        puts("\n=============================");
+        printf("r%d - r%d * %.3f\n", j + 1, i + 1, m);
+        matrixPrint(formatedMatrix);
+        puts("=============================\n");
+      */
     }
   }
   // multiply formatedMatrix by factor
@@ -297,23 +390,232 @@ matrix *matrixInverse(matrix *mat) {
   return matrixMultiplyWithNum(1.0 / determinant, adjointMatrix);
 }
 
+int matrixGetMatrixRank(matrix *mat) {
+  int rank = 0;
+  matrix *formatedMatrix = matrixToUprightTriangleForm(mat);
+  for (int i = 0; i < formatedMatrix->dim[0]; ++i) {
+    for (int j = 0; j < formatedMatrix->dim[1]; ++j) {
+      if (!equalsToZero(formatedMatrix->data[i * formatedMatrix->dim[1] + j])) {
+        ++rank;
+        break;
+      }
+    }
+  }
+  return rank;
+}
+
+double matrixGetMatrixTrace(matrix *mat) {
+  double trace = 0.0;
+  int len = MIN(mat->dim[0], mat->dim[1]);
+  for (int i = 0; i < len; ++i) {
+    trace += mat->data[i * mat->dim[1] + i];
+  }
+  return trace;
+}
+
 // === vector part
 
-double vectorDotProduct(matrix *v1, matrix *v2) {
-  // check the definitions
-  if (v1->dim[0] != v2->dim[0] || v1->dim[1] != v2->dim[1]) {
-    printf("The dimensions are not matched.\n");
+vector *vectorInit(int len, char o) {
+  if (!equalsT(o, 'r') && !equalsT(o, 'c')) {
+    printf("The orientation can only be Row(r) or Column(c)!\n");
     exit(EXIT_FAILURE);
   }
-  // the input must be vectors
-  if (v1->dim[0] != 1 && v1->dim[1] != 1) {
-    printf("The inputs are not vector!");
+  // get a vector pointer
+  vector *vec = calloc(1, sizeof(vector));
+  // init some attributes
+  vec->dim = len;
+  vec->orient = o;
+  vec->data = calloc(vec->dim, sizeof(double));
+  // return the pointer
+  return vec;
+}
+
+vector *vectorGetVectorByArray(int len, char o, double *arr) {
+  vector *vec = vectorInit(len, o);
+
+  for (int i = 0; i < vec->dim; ++i) {
+    vec->data[i] = arr[i];
+  }
+  return vec;
+}
+
+void vectorPrintWithPrecision(vector *vec, int precision) {
+  puts("vec |>");
+  if (equalsT(vec->orient, 'r')) {
+    putchar('[');
+    for (int i = 0; i < vec->dim - 1; ++i) {
+      printf("%.*f, ", precision, vec->data[i]);
+    }
+    printf("%.*f]\n\n", precision, vec->data[vec->dim - 1]);
+  } else if (equalsT(vec->orient, 'c')) {
+    puts("@==");
+    for (int i = 0; i < vec->dim; ++i) {
+      printf("%.*f\n", precision, vec->data[i]);
+    }
+    puts("@==\n");
+  } else {
+    printf("The orientation is illegal");
+    exit(EXIT_FAILURE);
+  }
+}
+
+void vectorPrint(vector *vec) {
+  // default precision is 3
+  // can be implementated by "%g"
+  vectorPrintWithPrecision(vec, 3);
+}
+
+vector *vectorAddition(vector *v1, vector *v2) {
+  if (!equalsT(v1->dim, v2->dim) && !equalsT(v1->orient, v2->orient)) {
+    printf("The dimensions are not equal!\n");
+    exit(EXIT_FAILURE);
+  }
+  vector *res = vectorInit(v1->dim, v1->orient);
+  for (int i = 0; i < res->dim; ++i) {
+    res->data[i] = v1->data[i] + v2->data[i];
+  }
+  return res;
+}
+
+vector *vectorSubtraction(vector *v1, vector *v2) {
+  if (!equalsT(v1->dim, v2->dim) && !equalsT(v1->orient, v2->orient)) {
+    printf("The dimensions are not equal!\n");
+    exit(EXIT_FAILURE);
+  }
+  vector *res = vectorInit(v1->dim, v1->orient);
+  for (int i = 0; i < res->dim; ++i) {
+    res->data[i] = v1->data[i] - v2->data[i];
+  }
+  return res;
+}
+double vectorDotProduct(vector *v1, vector *v2) {
+  // check the definitions
+  if (!equalsT(v1->dim, v2->dim) || !equalsT(v1->orient, v1->orient)) {
+    printf("The dimensions are not matched.\n");
     exit(EXIT_FAILURE);
   }
 
   double res = 0;
-  for (int i = 0; i < (v1->dim[0] == 1 ? v1->dim[1] : v1->dim[0]); ++i) {
+  for (int i = 0; i < v1->dim; ++i) {
     res += v1->data[i] * v2->data[i];
   }
   return res;
+}
+
+vector *vectorCrossProduct(vector *v1, vector *v2) {
+  // for 2D vector such as [a, b]
+  // we will expand it to [a, b, 0]
+  if ((!equalsT(v1->dim, 2) && !equalsT(v1->dim, 3)) ||
+      (!equalsT(v2->dim, 2) && !equalsT(v2->dim, 3))) {
+    printf("The length of the vector must be 2 or 3");
+    exit(EXIT_FAILURE);
+  }
+
+  if (!equalsT(v1->orient, v2->orient)) {
+    printf("The orientation of vectors must be equal!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  vector *crossProduct = vectorInit(3, v1->orient);
+
+#define tryGet(vec, pos) ((vec)->dim > pos ? (vec)->data[pos] : 0)
+
+  crossProduct->data[0] =
+      v1->data[1] * tryGet(v2, 2) - v2->data[1] * tryGet(v1, 2);
+  crossProduct->data[1] =
+      -v1->data[0] * tryGet(v2, 2) + v2->data[0] * tryGet(v1, 2);
+  crossProduct->data[2] = v1->data[0] * v2->data[1] - v2->data[0] * v1->data[1];
+
+#undef tryGet
+
+  return crossProduct;
+}
+
+// === other part
+
+double absT(double num) {
+  // simple implementation
+  return num < 0 ? -num : num;
+}
+
+matrix *powerMatrix(matrix *mat, int n) {
+  if (mat->dim[0] != mat->dim[1]) {
+    printf("The matrix must be squared!\n");
+    exit(EXIT_FAILURE);
+  }
+  // M(n, n) ^ 0 = E(n)
+  if (n == 0) {
+    return matrixGetIndentityMatrix(mat->dim[0]);
+  }
+  // for result
+  matrix *res = matrixGetIndentityMatrix(mat->dim[0]);
+  // for temproray variable
+  matrix *temp;
+  for (int i = 0; i < n; ++i) {
+    temp = res;
+    res = matrixMultiply(res, mat);
+    free(temp);
+  }
+
+  return res;
+}
+
+vector *powerVector(vector *vec, int n) {
+  vector *res = vectorInit(vec->dim, vec->orient);
+  for (int i = 0; i < vec->dim; ++i) {
+    res->data[i] = powerT(vec->data[i], n);
+  }
+
+  return res;
+}
+
+double powerNum(double num, int n) {
+  double res = 1.0;
+  for (int i = 0; i < n; ++i) {
+    res *= num;
+  }
+  return res;
+}
+
+int getInversionNumber(int len, int *arr) {
+  int inversionNumber = 0;
+  for (int i = 0; i < len - 1; ++i) {
+    for (int j = i; j < len; ++j) {
+      if (arr[i] > arr[j])
+        ++inversionNumber;
+    }
+  }
+  return inversionNumber;
+}
+
+matrix *solveLinearFunctions(matrix *argM, matrix *valueV) {
+  // use x = A^-1 b
+  return matrixMultiply(matrixInverse(argM), valueV);
+}
+
+matrix *vectorToMatrix(vector *vec) {
+  switch (vec->orient) {
+  case 'r':
+    return matrixGetMatrixByArray(1, vec->dim, vec->data);
+  case 'c':
+    return matrixGetMatrixByArray(vec->dim, 1, vec->data);
+  default:
+    printf("ERROR!");
+    exit(EXIT_FAILURE);
+  }
+}
+
+vector *matrixToVector(matrix *mat) {
+  if (!equalsT(mat->dim[0], 1) && !equalsT(mat->dim[1], 1)) {
+    printf("The dimensions are not matched!\n");
+    exit(EXIT_FAILURE);
+  }
+  if (equalsT(mat->dim[0], 1)) {
+    return vectorGetVectorByArray(mat->dim[1], 'r', mat->data);
+  } else if (equalsT(mat->dim[1], 1)) {
+    return vectorGetVectorByArray(mat->dim[0], 'c', mat->data);
+  } else {
+    printf("ERROR!\n");
+    exit(EXIT_FAILURE);
+  }
 }

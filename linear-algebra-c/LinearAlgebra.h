@@ -208,42 +208,6 @@ int matrixGetMatrixRank(matrix *mat);
 // @return : the trace of the matrix
 double matrixGetMatrixTrace(matrix *mat);
 
-// ## TODO
-// normalize the matrix
-// @param mat : the matrix
-// @return : the normalized matrix
-matrix *matrixNormalize(matrix *mat);
-
-// ## TODO
-// get the most simple form of matrix
-// @param mat : the matrix
-// @return : the most simple form
-matrix *matrixSimplify(matrix *mat);
-
-// ## TODO
-// LU decompose of a matrix
-// @param mat : the matrix
-// @return : the decompose matrices
-matrix *matrixLUDecompose(matrix *mat);
-
-// ## TODO
-// diagonalize a matrix
-// @param mat : the matrix
-// @return : the diagonalized matrix
-matrix *matrixDiagonalize(matrix *mat);
-
-// ## TODO
-// the eigenvalues of a matrix
-// @param mat : the matrix
-// @return : all the eigenvalues
-vector *matrixGetEigenValues(matrix *mat);
-
-// ## TODO
-// the eigenvectors of a matrix
-// @param mat : the matrix
-// @return : all the eigenvectors, use matrix
-matrix *matrixGetEigenVectors(matrix *mat);
-
 // === vector part
 
 // init a vector
@@ -279,19 +243,6 @@ vector *vectorAddition(vector *v1, vector *v2);
 // @param v2 : the second vector
 // @return : the difference of the two vectors
 vector *vectorSubtraction(vector *v1, vector *v2);
-
-// ## TODO
-// the angle between two vectors
-// @param v1 : the first vector
-// @param v2 : the second vector
-// @return : the cosine value of the angle
-double vectorGetAngle(vector *v1, vector *v2);
-
-// ## TODO
-// the norm of a vector
-// @param vec : the vector
-// @return : the norm of the vector
-double vectorGetNorm(vector *vec);
 
 // dot product of two vectors
 // @param v1 : the first vector

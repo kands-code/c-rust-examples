@@ -6,9 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**********************************************************
+ * Ordered List -- static
+ **********************************************************/
+
 /**
  * @func InitOLS : initialize a static ordered list
- * @param ols    : uninitialized list [ OrderedListStatic * ]
+ * @param ols    : raw list [ OrderedListStatic * ]
  */
 void InitOLS(OrderedListStatic *ols) {
   ols->maxSize = InitSize;

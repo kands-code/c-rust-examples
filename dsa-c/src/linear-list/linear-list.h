@@ -28,7 +28,7 @@ typedef struct {
 
 /**
  * @func InitOLS : initialize a static ordered list
- * @param ols    : uninitialized list [ OrderedListStatic * ]
+ * @param ols    : raw list [ OrderedListStatic * ]
  */
 void InitOLS(OrderedListStatic *ols);
 
@@ -44,7 +44,7 @@ int LengthOfOLS(OrderedListStatic ols);
  * @param ols            : the static ordered list  [ OrderedListStatic ]
  * @param elem           : the element              [ ElemType          ]
  * @return i             : the index of the element [ int               ]
- * @descript function return `-1` for not found
+ * @descript             : function return `-1` for not found
  */
 int LocateElemOfOLS(OrderedListStatic ols, ElemType elem);
 
@@ -53,7 +53,7 @@ int LocateElemOfOLS(OrderedListStatic ols, ElemType elem);
  * @param ols         : the static ordered list          [ OrderedListStatic ]
  * @param i           : the index of the element         [ int               ]
  * @return elem       : the element which's index is `i` [ ElemType          ]
- * @descript function exit when the index is illegal
+ * @descript          : function exit when the index is illegal
  */
 ElemType GetElemOfOLS(OrderedListStatic ols, int i);
 
@@ -63,7 +63,7 @@ ElemType GetElemOfOLS(OrderedListStatic ols, int i);
  * @param i              : the index          [ int                 ]
  * @param elem           : the element        [ ElemType            ]
  * @return result        : whether successful [ int                 ]
- * @descript function return -1 for failed and 1 for successful
+ * @descript             : function return -1 for failed and 1 for successful
  */
 int ListInsertOfOLS(OrderedListStatic *ols, int i, ElemType elem);
 
@@ -73,8 +73,8 @@ int ListInsertOfOLS(OrderedListStatic *ols, int i, ElemType elem);
  * @param i              : the index              [ int                 ]
  * @param elem           : the pointer of element [ ElemType *          ]
  * @return result        : whether successful     [ int                 ]
- * @descript function return -1 for failed and 1 for successful,
- *           deleted element will return by the `elem`
+ * @descript             : function return -1 for failed and 1 for successful,
+ *                         deleted element will return by the `elem`
  */
 int ListDeleteOfOLS(OrderedListStatic *ols, int i, ElemType *elem);
 
@@ -88,7 +88,7 @@ void PrintListOfOLS(OrderedListStatic ols);
  * @func EmptyOfOLS : test whether the list is empty
  * @param ols       : the list      [ OrderedListStatic ]
  * @return result   : whether empty [ int               ]
- * @descript function return 1 for empty and 0 for not empty
+ * @descript        : function return 1 for empty and 0 for not empty
  */
 int EmptyOfOLS(OrderedListStatic ols);
 

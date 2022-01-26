@@ -4,22 +4,6 @@
  * Macros
  **********************************************************/
 
-/**
- * @macroFunc max : return the bigger one
- * @param a       : the first param
- * @param b       : the second param
- * @return result : the bigger one between a and b
- */
-#define max(a, b) a > b ? a : b
-
-/**
- * @macroFunc min : return the smaller one
- * @param a       : the first param
- * @param b       : the second param
- * @return result : the smaller one between a and b
- */
-#define min(a, b) a < b ? a : b
-
 /**********************************************************
  * Type define
  **********************************************************/
@@ -50,21 +34,23 @@ typedef struct {
 Matrix *InitMatrix(int r, int c, double d);
 
 /**
- * @func GetMatrixFromArray : initialize a matrix from an array
- * @param r                 : the row number      [ int      ]
- * @param c                 : the column number   [ int      ]
- * @param len               : the length of array [ int      ]
- * @param arr               : the array           [ double * ]
- * @return mat              : the matrix          [ Matrix * ]
- * @descript                : function will return null for illegal size,
- *                            if size is bigger than array, fill with `0`,
- *                            if size is smaller than array, truncate
+ * @func InitMatrixFromArray : initialize a matrix from an array
+ * @param r                  : the row number      [ int      ]
+ * @param c                  : the column number   [ int      ]
+ * @param len                : the length of array [ int      ]
+ * @param arr                : the array           [ double * ]
+ * @return mat               : the matrix          [ Matrix * ]
+ * @descript                 : function will return null for illegal size,
+ *                             if size is bigger than array, fill with `0`,
+ *                             if size is smaller than array, truncate
  */
-Matrix *GetMatrixFromArray(int r, int c, int len, double *arr);
+Matrix *InitMatrixFromArray(int r, int c, int len, double *arr);
 
 /**
- *
+ * @func DestoryMatrix : destory matrix
+ * @param mat          : the matrix [ Matrix * ]
  */
+void DestoryMatrix(Matrix *mat);
 
 /**********************************************************
  * Matrix tools
@@ -83,3 +69,23 @@ void PrintMatrixP(Matrix *mat, int p);
  * @descript         : default precision is 2
  */
 void PrintMatrix(Matrix *mat);
+
+/**
+ * @func GetMatrixVal : get the element from the matrix by coordinate
+ * @param mat         : the matrix [ Matrix * ]
+ * @param r           : the row    [ int      ]
+ * @param c           : the column [ int      ]
+ * @return val        : the value  [ double   ]
+ * @descript          : function will exit when the coordinate is illegal
+ */
+double GetMatrixVal(Matrix *mat, int r, int c);
+
+/**
+ * @func SetMatrixVal : get the element from the matrix by coordinate
+ * @param mat         : the matrix [ Matrix * ]
+ * @param r           : the row    [ int      ]
+ * @param c           : the column [ int      ]
+ * @param v           : the value  [ double   ]
+ * @descript          : function will exit when the coordinate is illegal
+ */
+void SetMatrixVal(Matrix *mat, int r, int c, double v);

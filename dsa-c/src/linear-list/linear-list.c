@@ -2,7 +2,6 @@
  * linear-list.c -- function realization
  */
 #include "linear-list.h"
-#include "../utilities/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -82,7 +81,7 @@ int ListInsertOfOLS(OrderedListStatic *ols, int i, ElemType elem) {
   for (int j = ols->length - 1; j >= i; --j) {
     ols->data[j + 1] = ols->data[j];
   }
-  ols->length = max(ols->length + 1, i + 1);
+  ols->length = ols->length + 1 > i + 1 ? ols->length + 1 : i + 1;
   ols->data[i] = elem;
   return 1;
 }

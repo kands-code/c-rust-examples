@@ -37,17 +37,17 @@ Matrix *InitMatrix(int r, int c, double d) {
 }
 
 /**
- * @func GetMatrixFromArray : initialize a matrix from an array
- * @param r                 : the row number      [ int      ]
- * @param c                 : the column number   [ int      ]
- * @param len               : the length of array [ int      ]
- * @param arr               : the array           [ double * ]
- * @return mat              : the matrix          [ Matrix * ]
- * @descript                : function will return null for illegal size,
- *                            if size is bigger than array, fill with `0`,
- *                            if size is smaller than array, truncate
+ * @func InitMatrixFromArray : initialize a matrix from an array
+ * @param r                  : the row number      [ int      ]
+ * @param c                  : the column number   [ int      ]
+ * @param len                : the length of array [ int      ]
+ * @param arr                : the array           [ double * ]
+ * @return mat               : the matrix          [ Matrix * ]
+ * @descript                 : function will return null for illegal size,
+ *                             if size is bigger than array, fill with `0`,
+ *                             if size is smaller than array, truncate
  */
-Matrix *GetMatrixFromArray(int r, int c, int len, double *arr) {
+Matrix *InitMatrixFromArray(int r, int c, int len, double *arr) {
   if (r < 1 || c < 1) { // size must greater equal than [1, 1]
     return NULL;
   }
@@ -58,7 +58,8 @@ Matrix *GetMatrixFromArray(int r, int c, int len, double *arr) {
   mat->size[0] = r;
   mat->size[1] = c;
 
-  for (int i = 0; i < min(len, r * c); ++i) {
+  int m = len < r * c ? len : r * c;
+  for (int i = 0; i < m; ++i) {
     mat->data[i] = arr[i];
   }
 
@@ -69,6 +70,15 @@ Matrix *GetMatrixFromArray(int r, int c, int len, double *arr) {
   }
 
   return mat;
+}
+
+/**
+ * @func DestoryMatrix : destory matrix
+ * @param mat          : the matrix [ Matrix * ]
+ */
+void DestoryMatrix(Matrix *mat) {
+  free(mat->data);
+  free(mat);
 }
 
 /**********************************************************
@@ -98,3 +108,34 @@ void PrintMatrixP(Matrix *mat, int p) {
  * @descript         : default precision is 2
  */
 void PrintMatrix(Matrix *mat) { PrintMatrixP(mat, 2); }
+
+/**
+ * @func GetMatrixVal : get the element from the matrix by coordinate
+ * @param mat         : the matrix [ Matrix * ]
+ * @param r           : the row    [ int      ]
+ * @param c           : the column [ int      ]
+ * @return val        : the value  [ double   ]
+ * @descript          : function will exit when the coordinate is illegal
+ */
+double GetMatrixVal(Matrix *mat, int r, int c) {
+  if (r < 0 || r > mat->size[0] || c < 0 || c > mat->size[1]) {
+    exit(EXIT_FAILURE);
+  }
+  return mat->data[r * mat->size[1] + c];
+}
+
+/**
+ * @func SetMatrixVal : get the element from the matrix by coordinate
+ * @param mat         : the matrix [ Matrix * ]
+ * @param r           : the row    [ int      ]
+ * @param c           : the column [ int      ]
+ * @param v           : the value  [ double   ]
+ * @descript          : function will exit when the coordinate is illegal
+ */
+void SetMatrixVal(Matrix *mat, int r, int c, double v) {
+  if (r < 0 || r > mat->size[0] || c < 0 || c > mat->size[1]) {
+    exit(EXIT_FAILURE);
+  }
+
+  mat->data[r * mat->size[1] + c] = v;
+}

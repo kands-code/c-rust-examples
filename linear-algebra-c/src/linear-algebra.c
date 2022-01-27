@@ -2,6 +2,10 @@
  * linear-algebra.c -- function realization
  */
 
+/**********************************************************
+ * Includes
+ **********************************************************/
+
 #include "linear-algebra.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,6 +77,35 @@ Matrix *InitMatrixFromArray(int r, int c, int len, double *arr) {
 }
 
 /**
+ * @func InitMatrixByInput : initialize a matrix by user input
+ * @return mat             : the matrix [ Matrix * ]
+ * @descript               : input element separate by blank character;
+ *                           function will return wrong matrix,
+ *                           if user do not follow the correct way of typing
+ */
+Matrix *InitMatrixByInput() {
+  int r, c;
+  printf("Input the Size of Matrix (r, c): ");
+  scanf("%d %d", &r, &c);
+
+  Matrix *mat = calloc(1, sizeof(Matrix));
+
+  mat->data = calloc(r * c, sizeof(double));
+
+  mat->size[0] = r;
+  mat->size[1] = c;
+
+  puts("Input the Elements: ");
+  for (int i = 0; i < r; ++i) {
+    for (int j = 0; j < c; ++j) {
+      scanf("%lf", &(mat->data[i * c + j]));
+    }
+  }
+
+  return mat;
+}
+
+/**
  * @func DestoryMatrix : destory matrix
  * @param mat          : the matrix [ Matrix * ]
  */
@@ -93,9 +126,9 @@ void DestoryMatrix(Matrix *mat) {
 void PrintMatrixP(Matrix *mat, int p) {
   puts("<|Matrix");
   for (int i = 0; i < mat->size[0]; ++i) {
-    printf("\t[");
+    printf(" [");
     for (int j = 0; j < mat->size[1]; ++j) {
-      printf("%.*f, ", p, mat->data[mat->size[1] * i + j]);
+      printf("%6.*f, ", p, mat->data[mat->size[1] * i + j]);
     }
     printf("\b\b]\n");
   }

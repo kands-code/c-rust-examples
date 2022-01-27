@@ -1,6 +1,10 @@
 #pragma once
 
 /**********************************************************
+ * Includes
+ **********************************************************/
+
+/**********************************************************
  * Macros
  **********************************************************/
 
@@ -45,6 +49,15 @@ Matrix *InitMatrix(int r, int c, double d);
  *                             if size is smaller than array, truncate
  */
 Matrix *InitMatrixFromArray(int r, int c, int len, double *arr);
+
+/**
+ * @func InitMatrixByInput : initialize a matrix by user input
+ * @return mat             : the matrix [ Matrix * ]
+ * @descript               : input element separate by blank character;
+ *                           function will return wrong matrix,
+ *                           if user do not follow the correct way of typing
+ */
+Matrix *InitMatrixByInput();
 
 /**
  * @func DestoryMatrix : destory matrix

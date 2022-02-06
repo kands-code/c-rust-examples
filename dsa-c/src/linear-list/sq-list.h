@@ -3,7 +3,7 @@
 /**
  * @macroConst InitSize : the initial size of list
  */
-#define InitSize 100
+/// #define InitSize 101
 
 /**
  * @type ElemType : the type of element in list
@@ -21,8 +21,8 @@ typedef int ElemType;
  * @content maxSize : max size of `data`   [ ElemType   ]
  */
 typedef struct {
-  // static version
-  // ElemType data[InitSize];
+  /// static version
+  /// ElemType data[InitSize];
   ElemType *data;
   ElemType length;
   ElemType maxSize;
@@ -31,8 +31,9 @@ typedef struct {
 /**
  * @func SqList_Init : initialize a sequence list
  * @param sqlist     : raw list [ SqList * ]
+ * @param maxSize    : the max size of sequence list
  */
-void SqList_Init(SqList *sqlist);
+void SqList_Init(SqList *sqlist, int maxSize);
 
 /**
  * @func SqList_Length : get the length of sequence list
@@ -95,8 +96,8 @@ void SqList_PrintList(SqList sqlist);
 int SqList_Empty(SqList sqlist);
 
 /**
- * @func SqList_DestoryList : destory the sequence list
+ * @func SqList_DestroyList : destroy the sequence list
  * @param sqlist            : the list [ SqList * ]
  * @descript                : the function will exit when the sqlist is null
  */
-void SqList_DestoryList(SqList *sqlist);
+void SqList_DestroyList(SqList *sqlist);

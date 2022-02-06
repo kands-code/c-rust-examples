@@ -9,12 +9,15 @@
  * Sequence List
  **********************************************************/
 
+/// function would crash when the list is null
+
 /**
  * @func SqList_Init : initialize a sequence list
  * @param sqlist     : raw list [ SqList * ]
+ * @param maxSize    : the max size of sequence list
  */
-void SqList_Init(SqList *sqlist) {
-  sqlist->maxSize = InitSize;
+void SqList_Init(SqList *sqlist, int maxSize) {
+  sqlist->maxSize = maxSize;
   sqlist->length = 0;
 
   sqlist->data = malloc(sqlist->maxSize * sizeof(ElemType));
@@ -71,6 +74,11 @@ ElemType SqList_GetElem(SqList sqlist, int i) {
  * @descript               : function return -1 for failed and 1 for successful
  */
 int SqList_ListInsert(SqList *sqlist, int i, ElemType elem) {
+  if (NULL == sqlist) {
+    puts("The list is NULL!");
+    exit(EXIT_FAILURE);
+  }
+
   if (i < 0 || i >= sqlist->maxSize) {
     puts("Illegal Index!");
     return -1;
@@ -98,6 +106,11 @@ int SqList_ListInsert(SqList *sqlist, int i, ElemType elem) {
  *                           deleted element will return by the `elem`
  */
 int SqList_ListDelete(SqList *sqlist, int i, ElemType *elem) {
+  if (NULL == sqlist) {
+    puts("The list is NULL!");
+    exit(EXIT_FAILURE);
+  }
+
   if (i < 0 || i >= sqlist->length) {
     puts("Illegal Index");
     return -1;
@@ -131,8 +144,15 @@ void SqList_PrintList(SqList sqlist) {
 int SqList_Empty(SqList sqlist) { return sqlist.length == 0; }
 
 /**
- * @func SqList_DestoryList : destory the sequence list
+ * @func SqList_DestroyList : destroy the sequence list
  * @param sqlist            : the list [ SqList * ]
  * @descript                : the function will exit when the sqlist is null
  */
-void SqList_DestoryList(SqList *sqlist) { free(sqlist->data); }
+void SqList_DestroyList(SqList *sqlist) {
+  if (NULL == sqlist) {
+    /// the list is already destroyed
+    return;
+  }
+
+  free(sqlist->data);
+}

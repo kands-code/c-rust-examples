@@ -6,7 +6,7 @@
  * Includes
  **********************************************************/
 
-#include "linear-algebra.h"
+#include "linalg.h"
 #include <stdio.h>
 #include <stdlib.h>
 

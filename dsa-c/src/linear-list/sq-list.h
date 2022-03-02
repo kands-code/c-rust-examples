@@ -1,14 +1,14 @@
 #pragma once
 
+/**********************************************************
+ * Includes
+ *********************************************************/
+#include "utils.h"
+
 /**
  * @macroConst InitSize : the initial size of list
  */
 /// #define InitSize 101
-
-/**
- * @type ElemType : the type of element in list
- */
-typedef int ElemType;
 
 /**********************************************************
  * Sequence List
@@ -20,7 +20,7 @@ typedef int ElemType;
  * @content length  : the length of `data` [ ElemType   ]
  * @content maxSize : max size of `data`   [ ElemType   ]
  */
-typedef struct {
+typedef struct SqList {
   /// static version
   /// ElemType data[InitSize];
   ElemType *data;

@@ -21,11 +21,11 @@
  * @content maxSize : max size of `data`   [ ElemType   ]
  */
 typedef struct SqList {
-  /// static version
-  /// ElemType data[InitSize];
-  ElemType *data;
-  ElemType length;
-  ElemType maxSize;
+    /// static version
+    /// ElemType data[InitSize];
+    ElemType *data;
+    ElemType length;
+    ElemType maxSize;
 } SqList;
 
 /**

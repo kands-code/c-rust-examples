@@ -17,14 +17,14 @@
  * @param maxSize    : the max size of sequence list
  */
 void SqList_Init(SqList *sqlist, int maxSize) {
-  sqlist->maxSize = maxSize;
-  sqlist->length = 0;
+    sqlist->maxSize = maxSize;
+    sqlist->length = 0;
 
-  sqlist->data = malloc(sqlist->maxSize * sizeof(ElemType));
+    sqlist->data = malloc(sqlist->maxSize * sizeof(ElemType));
 
-  for (int i = 0; i < sqlist->maxSize; ++i) {
-    sqlist->data[i] = 0;
-  }
+    for (int i = 0; i < sqlist->maxSize; ++i) {
+        sqlist->data[i] = 0;
+    }
 }
 
 /**
@@ -42,27 +42,27 @@ int SqList_Length(SqList sqlist) { return sqlist.length; }
  * @descript               : function return `-1` for not found
  */
 int SqList_LocateElem(SqList sqlist, ElemType elem) {
-  for (int i = 0; i < sqlist.length; ++i) {
-    if (sqlist.data[i] == elem) {
-      return i;
+    for (int i = 0; i < sqlist.length; ++i) {
+        if (sqlist.data[i] == elem) {
+            return i;
+        }
     }
-  }
 
-  return -1;
+    return -1;
 }
 
 /**
  * @func SqList_GetElem : get the element at the index in the sqlist
  * @param sqlist        : the sequence list                [ SqList   ]
  * @param i             : the index of the element         [ int      ]
- * @return elem         : the element which's index is `i` [ ElemType ]
+ * @return elem         : the element which index is `i` [ ElemType ]
  * @descript            : function exit when the index is illegal
  */
 ElemType SqList_GetElem(SqList sqlist, int i) {
-  if (i < 0 || i > sqlist.length) {
-    exit(EXIT_FAILURE);
-  }
-  return sqlist.data[i];
+    if (i < 0 || i > sqlist.length) {
+        exit(EXIT_FAILURE);
+    }
+    return sqlist.data[i];
 }
 
 /**
@@ -74,26 +74,26 @@ ElemType SqList_GetElem(SqList sqlist, int i) {
  * @descript               : function return -1 for failed and 1 for successful
  */
 int SqList_ListInsert(SqList *sqlist, int i, ElemType elem) {
-  if (NULL == sqlist) {
-    puts("The list is NULL!");
-    exit(EXIT_FAILURE);
-  }
+    if (NULL == sqlist) {
+        puts("The list is NULL!");
+        exit(EXIT_FAILURE);
+    }
 
-  if (i < 0 || i >= sqlist->maxSize) {
-    puts("Illegal Index!");
-    return -1;
-  } else if (sqlist->maxSize <= sqlist->length + 1) {
-    puts("The List is Full!");
-    return -1;
-  }
+    if (i < 0 || i >= sqlist->maxSize) {
+        puts("Illegal Index!");
+        return -1;
+    } else if (sqlist->maxSize <= sqlist->length + 1) {
+        puts("The List is Full!");
+        return -1;
+    }
 
-  // move element backward
-  for (int j = sqlist->length - 1; j >= i; --j) {
-    sqlist->data[j + 1] = sqlist->data[j];
-  }
-  sqlist->length = sqlist->length + 1 > i + 1 ? sqlist->length + 1 : i + 1;
-  sqlist->data[i] = elem;
-  return 1;
+    // move element backward
+    for (int j = sqlist->length - 1; j >= i; --j) {
+        sqlist->data[j + 1] = sqlist->data[j];
+    }
+    sqlist->length = sqlist->length + 1 > i + 1 ? sqlist->length + 1 : i + 1;
+    sqlist->data[i] = elem;
+    return 1;
 }
 
 /**
@@ -106,22 +106,22 @@ int SqList_ListInsert(SqList *sqlist, int i, ElemType elem) {
  *                           deleted element will return by the `elem`
  */
 int SqList_ListDelete(SqList *sqlist, int i, ElemType *elem) {
-  if (NULL == sqlist) {
-    puts("The list is NULL!");
-    exit(EXIT_FAILURE);
-  }
+    if (NULL == sqlist) {
+        puts("The list is NULL!");
+        exit(EXIT_FAILURE);
+    }
 
-  if (i < 0 || i >= sqlist->length) {
-    puts("Illegal Index");
-    return -1;
-  }
+    if (i < 0 || i >= sqlist->length) {
+        puts("Illegal Index");
+        return -1;
+    }
 
-  *elem = sqlist->data[i];
-  for (int j = i; j < sqlist->length - 1; ++j) {
-    sqlist->data[j] = sqlist->data[j + 1];
-  }
-  sqlist->length--;
-  return 1;
+    *elem = sqlist->data[i];
+    for (int j = i; j < sqlist->length - 1; ++j) {
+        sqlist->data[j] = sqlist->data[j + 1];
+    }
+    sqlist->length--;
+    return 1;
 }
 
 /**
@@ -129,10 +129,10 @@ int SqList_ListDelete(SqList *sqlist, int i, ElemType *elem) {
  * @param sqlist          : the list [ SqList ]
  */
 void SqList_PrintList(SqList sqlist) {
-  for (int i = 0; i < sqlist.length; ++i) {
-    printf("%d ", sqlist.data[i]);
-  }
-  puts("\b\n");
+    for (int i = 0; i < sqlist.length; ++i) {
+        printf("%d ", sqlist.data[i]);
+    }
+    puts("\b\n");
 }
 
 /**
@@ -149,10 +149,10 @@ int SqList_Empty(SqList sqlist) { return sqlist.length == 0; }
  * @descript                : the function will exit when the sqlist is null
  */
 void SqList_DestroyList(SqList *sqlist) {
-  if (NULL == sqlist) {
-    /// the list is already destroyed
-    return;
-  }
+    if (NULL == sqlist) {
+        /// the list is already destroyed
+        return;
+    }
 
-  free(sqlist->data);
+    free(sqlist->data);
 }

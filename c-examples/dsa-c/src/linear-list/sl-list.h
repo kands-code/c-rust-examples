@@ -15,8 +15,8 @@
  * @content next : the next node        [ SL_Node * ]
  */
 typedef struct SL_Node {
-  ElemType data;
-  struct SL_Node *next;
+    ElemType data;
+    struct SL_Node *next;
 } SL_Node;
 
 /**
@@ -29,8 +29,9 @@ typedef SL_Node *SL_List;
  * @return L        : the linked list [ SL_List ]
  */
 SL_List SL_Sington();
+
 /**
- * @func SL_HeadInsert : initialize a list by head inseart method
+ * @func SL_HeadInsert : initialize a list by head insert method
  * @param L            : the linked list        [ SL_List ]
  * @param len          : the length of the list [ int     ]
  */

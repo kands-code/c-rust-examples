@@ -23,7 +23,7 @@ There are symbols and their examples
 | `@type`       | `@type SqList`                                    | a new type                          |
 | `@content`    | `@content length  : the length of data [ int ]`   | the content in a structure or class |
 | `@macroConst` | `@macroConst InitSize : the initial size of list` | macro defined constant              |
-| `@macroFunc`  | `@macroFunc max : return the bigger one`          | macro defined function              |
+| `@macroFunc`  | `@macroFunc MAX : return the bigger one`          | macro defined function              |
 | `@func`       | `@func SqList_Init : initialize a sequence list`  | a function                          |
 | `@param`      | `@param sqlist : raw list [ SqList * ]`           | function parameter                  |
 | `@return`     | `@return length : the length of the list`         | function return                     |

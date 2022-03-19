@@ -35,8 +35,8 @@
  * @descript     : a vector is also a matrix
  */
 typedef struct {
-  double *data;
-  int size[2];
+    double *data;
+    int size[2];
 } Matrix;
 
 /************************************************************
@@ -128,16 +128,16 @@ void SetMatrixVal(Matrix *mat, int r, int c, double v);
  * @param m1    : the first matrix        [ Matrix * ]
  * @param m2    : the second matrix       [ Matrix * ]
  * @return mat  : the sum of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatAdd(Matrix *m1, Matrix *m2);
 
 /**
- * @func MatSub : substract m2 from m1
+ * @func MatSub : subtract m2 from m1
  * @param m1    : the first matrix         [ Matrix * ]
  * @param m2    : the second matrix        [ Matrix * ]
  * @return mat  : the diff of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatSub(Matrix *m1, Matrix *m2);
 
@@ -146,7 +146,7 @@ Matrix *MatSub(Matrix *m1, Matrix *m2);
  * @param m1    : the first matrix            [ Matrix * ]
  * @param m2    : the second matrix           [ Matrix * ]
  * @return mat  : the product of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatMul(Matrix *m1, Matrix *m2);
 

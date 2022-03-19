@@ -6,7 +6,7 @@
  * Includes
  ************************************************************/
 
-#include "linalg.h"
+#include "linalgs.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,21 +23,21 @@
  * @descript        : function will return null for illegal size
  */
 Matrix *InitMatrix(int r, int c, double d) {
-  if (r < 1 || c < 1) { // size must greater equal than [1, 1]
-    return NULL;
-  }
+    if (r < 1 || c < 1) { // size must greater equal than [1, 1]
+        return NULL;
+    }
 
-  Matrix *mat = calloc(1, sizeof(Matrix));
-  mat->data = calloc(r * c, sizeof(double));
+    Matrix *mat = calloc(1, sizeof(Matrix));
+    mat->data = calloc(r * c, sizeof(double));
 
-  mat->size[0] = r;
-  mat->size[1] = c;
+    mat->size[0] = r;
+    mat->size[1] = c;
 
-  for (int i = 0; i < r * c; ++i) {
-    mat->data[i] = d;
-  }
+    for (int i = 0; i < r * c; ++i) {
+        mat->data[i] = d;
+    }
 
-  return mat;
+    return mat;
 }
 
 /**
@@ -52,28 +52,28 @@ Matrix *InitMatrix(int r, int c, double d) {
  *                             if size is smaller than array, truncate
  */
 Matrix *InitMatrixFromArray(int r, int c, int len, double *arr) {
-  if (r < 1 || c < 1) { // size must greater equal than [1, 1]
-    return NULL;
-  }
-
-  Matrix *mat = calloc(1, sizeof(Matrix));
-  mat->data = calloc(r * c, sizeof(double));
-
-  mat->size[0] = r;
-  mat->size[1] = c;
-
-  int m = len < r * c ? len : r * c;
-  for (int i = 0; i < m; ++i) {
-    mat->data[i] = arr[i];
-  }
-
-  if (len < r * c) {
-    for (int i = len; i < r * c; ++i) {
-      mat->data[i] = 0.0;
+    if (r < 1 || c < 1) { // size must greater equal than [1, 1]
+        return NULL;
     }
-  }
 
-  return mat;
+    Matrix *mat = calloc(1, sizeof(Matrix));
+    mat->data = calloc(r * c, sizeof(double));
+
+    mat->size[0] = r;
+    mat->size[1] = c;
+
+    int m = len < r * c ? len : r * c;
+    for (int i = 0; i < m; ++i) {
+        mat->data[i] = arr[i];
+    }
+
+    if (len < r * c) {
+        for (int i = len; i < r * c; ++i) {
+            mat->data[i] = 0.0;
+        }
+    }
+
+    return mat;
 }
 
 /**
@@ -84,25 +84,25 @@ Matrix *InitMatrixFromArray(int r, int c, int len, double *arr) {
  *                           if user do not follow the correct way of typing
  */
 Matrix *InitMatrixByInput() {
-  int r, c;
-  printf("Input the Size of Matrix (r, c): ");
-  scanf("%d %d", &r, &c);
+    int r, c;
+    printf("Input the Size of Matrix (r, c): ");
+    scanf("%d %d", &r, &c);
 
-  Matrix *mat = calloc(1, sizeof(Matrix));
+    Matrix *mat = calloc(1, sizeof(Matrix));
 
-  mat->data = calloc(r * c, sizeof(double));
+    mat->data = calloc(r * c, sizeof(double));
 
-  mat->size[0] = r;
-  mat->size[1] = c;
+    mat->size[0] = r;
+    mat->size[1] = c;
 
-  puts("Input the Elements: ");
-  for (int i = 0; i < r; ++i) {
-    for (int j = 0; j < c; ++j) {
-      scanf("%lf", &(mat->data[i * c + j]));
+    puts("Input the Elements: ");
+    for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < c; ++j) {
+            scanf("%lf", &(mat->data[i * c + j]));
+        }
     }
-  }
 
-  return mat;
+    return mat;
 }
 
 /**
@@ -110,8 +110,8 @@ Matrix *InitMatrixByInput() {
  * @param mat          : the matrix [ Matrix * ]
  */
 void DestroyMatrix(Matrix *mat) {
-  free(mat->data);
-  free(mat);
+    free(mat->data);
+    free(mat);
 }
 
 /************************************************************
@@ -124,15 +124,15 @@ void DestroyMatrix(Matrix *mat) {
  * @param p           : the precision [ int      ]
  */
 void PrintMatrixP(Matrix *mat, int p) {
-  puts("<|Matrix");
-  for (int i = 0; i < mat->size[0]; ++i) {
-    printf(" [");
-    for (int j = 0; j < mat->size[1]; ++j) {
-      printf("%6.*f, ", p, mat->data[mat->size[1] * i + j]);
+    puts("<<Matrix");
+    for (int i = 0; i < mat->size[0]; ++i) {
+        printf(" [ ");
+        for (int j = 0; j < mat->size[1]; ++j) {
+            printf("%-*.*f ", p + 3, p, mat->data[mat->size[1] * i + j]);
+        }
+        printf("]\n");
     }
-    printf("\b\b]\n");
-  }
-  puts("|>Matrix");
+    puts("Matrix>>");
 }
 
 /**
@@ -151,11 +151,11 @@ void PrintMatrix(Matrix *mat) { PrintMatrixP(mat, 2); }
  * @descript          : function will exit when the coordinate is illegal
  */
 double GetMatrixVal(Matrix *mat, int r, int c) {
-  if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
-    fputs("Wrong Position!\n", stderr);
-    exit(EXIT_FAILURE);
-  }
-  return mat->data[r * mat->size[1] + c];
+    if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
+        fputs("Wrong Position!\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+    return mat->data[r * mat->size[1] + c];
 }
 
 /**
@@ -167,12 +167,12 @@ double GetMatrixVal(Matrix *mat, int r, int c) {
  * @descript          : function will exit when the coordinate is illegal
  */
 void SetMatrixVal(Matrix *mat, int r, int c, double v) {
-  if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
-    fputs("Wrong Position!\n", stderr);
-    exit(EXIT_FAILURE);
-  }
+    if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
+        fputs("Wrong Position!\n", stderr);
+        exit(EXIT_FAILURE);
+    }
 
-  mat->data[r * mat->size[1] + c] = v;
+    mat->data[r * mat->size[1] + c] = v;
 }
 
 /************************************************************
@@ -184,47 +184,47 @@ void SetMatrixVal(Matrix *mat, int r, int c, double v) {
  * @param m1    : the first matrix        [ Matrix * ]
  * @param m2    : the second matrix       [ Matrix * ]
  * @return mat  : the sum of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatAdd(Matrix *m1, Matrix *m2) {
-  if (m1->size[0] != m2->size[0] || m1->size[1] != m2->size[1]) {
-    fputs("The Sizes Are Not Matched\n", stderr);
-    exit(EXIT_FAILURE);
-  }
-
-  Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
-
-  for (int i = 0; i < m1->size[0]; ++i) {
-    for (int j = 0; j < m2->size[1]; ++j) {
-      SetMatrixVal(mat, i, j, GetMatrixVal(m1, i, j) + GetMatrixVal(m2, i, j));
+    if (m1->size[0] != m2->size[0] || m1->size[1] != m2->size[1]) {
+        fputs("The Sizes Are Not Matched\n", stderr);
+        exit(EXIT_FAILURE);
     }
-  }
 
-  return mat;
+    Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
+
+    for (int i = 0; i < m1->size[0]; ++i) {
+        for (int j = 0; j < m2->size[1]; ++j) {
+            SetMatrixVal(mat, i, j, GetMatrixVal(m1, i, j) + GetMatrixVal(m2, i, j));
+        }
+    }
+
+    return mat;
 }
 
 /**
- * @func MatSub : substract m2 from m1
+ * @func MatSub : subtract m2 from m1
  * @param m1    : the first matrix        [ Matrix * ]
  * @param m2    : the second matrix       [ Matrix * ]
  * @return mat  : the diff of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatSub(Matrix *m1, Matrix *m2) {
-  if (m1->size[0] != m2->size[0] || m1->size[1] != m2->size[1]) {
-    fputs("The Sizes Are Not Matched\n", stderr);
-    exit(EXIT_FAILURE);
-  }
-
-  Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
-
-  for (int i = 0; i < m1->size[0]; ++i) {
-    for (int j = 0; j < m2->size[1]; ++j) {
-      SetMatrixVal(mat, i, j, GetMatrixVal(m1, i, j) - GetMatrixVal(m2, i, j));
+    if (m1->size[0] != m2->size[0] || m1->size[1] != m2->size[1]) {
+        fputs("The Sizes Are Not Matched\n", stderr);
+        exit(EXIT_FAILURE);
     }
-  }
 
-  return mat;
+    Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
+
+    for (int i = 0; i < m1->size[0]; ++i) {
+        for (int j = 0; j < m2->size[1]; ++j) {
+            SetMatrixVal(mat, i, j, GetMatrixVal(m1, i, j) - GetMatrixVal(m2, i, j));
+        }
+    }
+
+    return mat;
 }
 
 /**
@@ -232,27 +232,27 @@ Matrix *MatSub(Matrix *m1, Matrix *m2) {
  * @param m1    : the first matrix            [ Matrix * ]
  * @param m2    : the second matrix           [ Matrix * ]
  * @return mat  : the product of two matrices [ Matrix * ]
- * @descript    : the size must be mathed
+ * @descript    : the size must be matched
  */
 Matrix *MatMul(Matrix *m1, Matrix *m2) {
-  if (m1->size[1] != m2->size[0]) {
-    fputs("The Sizes Are Not Matched\n", stderr);
-    exit(EXIT_FAILURE);
-  }
-
-  Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
-
-  for (int i = 0; i < m1->size[0]; ++i) {
-    for (int j = 0; j < m2->size[1]; ++j) {
-      double sum = 0;
-      for (int k = 0; k < m1->size[1]; ++k) {
-        sum += GetMatrixVal(m1, i, k) * GetMatrixVal(m2, k, j);
-      }
-      SetMatrixVal(mat, i, j, sum);
+    if (m1->size[1] != m2->size[0]) {
+        fputs("The Sizes Are Not Matched\n", stderr);
+        exit(EXIT_FAILURE);
     }
-  }
 
-  return mat;
+    Matrix *mat = InitMatrix(m1->size[0], m2->size[1], 0);
+
+    for (int i = 0; i < m1->size[0]; ++i) {
+        for (int j = 0; j < m2->size[1]; ++j) {
+            double sum = 0;
+            for (int k = 0; k < m1->size[1]; ++k) {
+                sum += GetMatrixVal(m1, i, k) * GetMatrixVal(m2, k, j);
+            }
+            SetMatrixVal(mat, i, j, sum);
+        }
+    }
+
+    return mat;
 }
 
 /************************************************************
@@ -269,11 +269,11 @@ Matrix *MatMul(Matrix *m1, Matrix *m2) {
  *                function will exit with failure
  */
 Matrix *VecAdd(Matrix *v1, Matrix *v2) {
-  if ((v1->size[0] != 1 && v1->size[1] != 1) ||
-      (v2->size[0] != 1 && v2->size[1] != 1)) {
-    fputs("The Function Is for Vectors!\n", stderr);
-    exit(EXIT_FAILURE);
-  }
+    if ((v1->size[0] != 1 && v1->size[1] != 1) ||
+        (v2->size[0] != 1 && v2->size[1] != 1)) {
+        fputs("The Function Is for Vectors!\n", stderr);
+        exit(EXIT_FAILURE);
+    }
 
-  return MatAdd(v1, v2);
+    return MatAdd(v1, v2);
 }

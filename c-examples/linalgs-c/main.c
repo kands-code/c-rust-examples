@@ -3,7 +3,7 @@
 
 int main() {
     printf("Hello, World!\n");
-    Matrix * m = GetMatrix(2, 3, 2);
+    Matrix *m = InitMatrix(2, 3, 2);
     PrintMatrix(m);
 
     return 0;

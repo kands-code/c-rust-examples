@@ -1,10 +1,16 @@
-#include <stdio.h>
 #include "linalgs.h"
+#include <stdio.h>
 
 int main() {
-    printf("Hello, World!\n");
-    Matrix *m = InitMatrix(2, 3, 2);
-    PrintMatrix(m);
+  printf("Hello, World!\n");
+  Matrix *m = InitMatrixByInput();
 
-    return 0;
+  Matrix **res = MatToUT(m);
+  PrintMatrix(res[0]);
+  PrintMatrix(res[1]);
+
+  Matrix * v = InitMatrixByInput();
+  PrintMatrix(SolveLinearEqs(m, v));
+
+  return 0;
 }

@@ -35,8 +35,8 @@
  * @descript     : a vector is also a matrix
  */
 typedef struct {
-    double *data;
-    int size[2];
+  double *data;
+  int size[2];
 } Matrix;
 
 /************************************************************
@@ -54,6 +54,13 @@ typedef struct {
 Matrix *InitMatrix(int r, int c, double d);
 
 /**
+ * @func InitElemMatrix : initialize an element matrix
+ * @param n             : the size of matrix [ Matrix * ]
+ * @return e            : the element matrix [ Matrix * ]
+ */
+Matrix *InitElemMatrix(int n);
+
+/**
  * @func InitMatrixFromArray : initialize a matrix from an array
  * @param r                  : the row number      [ int      ]
  * @param c                  : the column number   [ int      ]
@@ -64,7 +71,7 @@ Matrix *InitMatrix(int r, int c, double d);
  *                             if size is bigger than array, fill with `0`,
  *                             if size is smaller than array, truncate
  */
-Matrix *InitMatrixFromArray(int r, int c, int len, double *arr);
+Matrix *InitMatrixFromArray(int r, int c, int len, const double *arr);
 
 /**
  * @func InitMatrixByInput : initialize a matrix by user input
@@ -110,6 +117,13 @@ void PrintMatrix(Matrix *mat);
 double GetMatrixVal(Matrix *mat, int r, int c);
 
 /**
+ * @func GetMatrixRank : get matrix rank
+ * @param m            : the matrix [ Matrix * ]
+ * @return r           : the rank   [ int      ]
+ */
+int GetMatrixRank(Matrix *m);
+
+/**
  * @func SetMatrixVal : get the element from the matrix by coordinate
  * @param mat         : the matrix [ Matrix * ]
  * @param r           : the row    [ int      ]
@@ -122,6 +136,13 @@ void SetMatrixVal(Matrix *mat, int r, int c, double v);
 /************************************************************
  * some matrix manipulations
  ************************************************************/
+
+/**
+ * @func MatTrans : transpose a matrix
+ * @param m       : the matrix            [ Matrix * ]
+ * @return mat    : the transposed matrix [ Matrix * ]
+ */
+Matrix *MatTrans(Matrix *m);
 
 /**
  * @func MatAdd : add up two matrices
@@ -142,6 +163,14 @@ Matrix *MatAdd(Matrix *m1, Matrix *m2);
 Matrix *MatSub(Matrix *m1, Matrix *m2);
 
 /**
+ * @func MatMul : multiply scalar with matrix
+ * @param n     : the scalar  [ int      ]
+ * @param m     : the matrix  [ Matrix * ]
+ * @return mat  : the product [ Matrix * ]
+ */
+Matrix *MatScalarMul(int n, Matrix *m);
+
+/**
  * @func MatMul : multiply m1 and m2
  * @param m1    : the first matrix            [ Matrix * ]
  * @param m2    : the second matrix           [ Matrix * ]
@@ -149,6 +178,33 @@ Matrix *MatSub(Matrix *m1, Matrix *m2);
  * @descript    : the size must be matched
  */
 Matrix *MatMul(Matrix *m1, Matrix *m2);
+
+/**
+ * @func MatToUT : transform a matrix to upper triangle form
+ * @param m      : the matrix [ Matrix *  ]
+ * @return res   : the result [ Matrix ** ]
+ * @descript     : result contains R, m,
+ *                 matrix must be squared
+ */
+Matrix **MatToUT(Matrix *m);
+
+/**
+ * @func MatDeterminant : get the determinant of matrix
+ * @param m             : the matrix      [ Matrix * ]
+ * @return det          : the determinant [ double   ]
+ * @descript            : the matrix must be squared
+ */
+double MatDeterminant(Matrix *m);
+
+/**
+ * @func SolveLinearEqs : solve linear equations
+ * @param A             : the coefficient matrix [ Matrix * ]
+ * @param b             : the vector             [ Matrix * ]
+ * @return s            : the solution           [ Matrix * ]
+ * @descript            : b must be col vector;
+ *                        if no solution, function will return NULL
+ */
+Matrix *SolveLinearEqs(Matrix *A, Matrix *b);
 
 /************************************************************
  * some vector manipulations -- based on matrix manipulations
@@ -159,8 +215,8 @@ Matrix *MatMul(Matrix *m1, Matrix *m2);
  * @param v1    : the first vector       [ Matrix * ]
  * @param v2    : the second vector      [ Matrix * ]
  * @return vec  : the sum of two vectors [ Matrix * ]
- * @descript    : vectors has orientation
- *                if orientations are not matched
+ * @descript    : vectors has orientation,
+ *                if orientations are not matched,
  *                function will exit with failure
  */
 Matrix *VecAdd(Matrix *v1, Matrix *v2);

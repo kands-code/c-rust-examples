@@ -3,4 +3,6 @@ project(linalgs C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(test_c main.c linalgs.c linalgs.h)
+set(SOURCE_FILES linalgs.c linalgs.h)
+
+add_executable(linalgs main.c ${SOURCE_FILES})

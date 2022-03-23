@@ -138,11 +138,15 @@ void DestroyMatrix(Matrix *mat) {
  * @param p           : the precision [ int      ]
  */
 void PrintMatrixP(Matrix *mat, int p) {
+  if (NULL == mat) {
+    fputs("The Matrix Is Not Exist!\n", stderr);
+    return;
+  }
   puts("<<Matrix");
   for (int i = 0; i < mat->size[0]; ++i) {
     printf(" [ ");
     for (int j = 0; j < mat->size[1]; ++j) {
-      printf("%-*.*f ", p + 3, p, mat->data[mat->size[1] * i + j]);
+      printf("%-*.*f ", p + 3, p, GetMatrixVal(mat, i, j));
     }
     printf("]\n");
   }
@@ -290,7 +294,7 @@ Matrix *MatSub(Matrix *m1, Matrix *m2) {
  * @param m     : the matrix  [ Matrix * ]
  * @return mat  : the product [ Matrix * ]
  */
-Matrix *MatScalarMul(int n, Matrix *m) {
+Matrix *MatScalarMul(double n, Matrix *m) {
   if (m == NULL) {
     fputs("Null Pointer Error!\n", stderr);
     exit(EXIT_FAILURE);
@@ -300,6 +304,31 @@ Matrix *MatScalarMul(int n, Matrix *m) {
   for (int i = 0; i < mat->size[0]; ++i) {
     for (int j = 0; j < mat->size[1]; ++j) {
       SetMatrixVal(mat, i, j, GetMatrixVal(m, i, j) * n);
+    }
+  }
+
+  return mat;
+}
+
+/**
+ * @func MatDiv : Divide scalar with matrix
+ * @param n     : the scalar  [ int      ]
+ * @param m     : the matrix  [ Matrix * ]
+ * @return mat  : the quotient [ Matrix * ]
+ */
+Matrix *MatScalarDiv(double n, Matrix *m) {
+  if (m == NULL) {
+    fputs("Null Pointer Error!\n", stderr);
+    exit(EXIT_FAILURE);
+  } else if (n == 0) {
+    fputs("Divided By Zero!\n", stderr);
+    exit(EXIT_FAILURE);
+  }
+
+  Matrix *mat = InitMatrix(m->size[0], m->size[1], 0);
+  for (int i = 0; i < mat->size[0]; ++i) {
+    for (int j = 0; j < mat->size[1]; ++j) {
+      SetMatrixVal(mat, i, j, GetMatrixVal(m, i, j) / n);
     }
   }
 
@@ -332,6 +361,35 @@ Matrix *MatMul(Matrix *m1, Matrix *m2) {
   }
 
   return mat;
+}
+
+/**
+ * @func MatKronecker : the Kronecker product of m1 and m2
+ * @param m1          : the first matrix  [ Matrix * ]
+ * @param m2          : the second matrix [ Matrix * ]
+ * @return p          : the product       [ Matrix * ]
+ */
+Matrix *MatKronecker(Matrix *m1, Matrix *m2) {
+  if (NULL == m1 || NULL == m2) {
+    fputs("The Matri Does Not Exist!\n", stderr);
+    exit(EXIT_FAILURE);
+  }
+
+  Matrix *p = InitMatrix(m1->size[0] * m2->size[0], m1->size[1] * m2->size[1], 0);
+  for (int i1 = 0; i1 < m1->size[0]; ++i1) {
+    for (int j1 = 0; j1 < m1->size[1]; ++j1) {
+      for (int i2 = 0; i2 < m2->size[0]; ++i2) {
+        for (int j2 = 0; j2 < m2->size[1]; ++j2) {
+          SetMatrixVal(p,
+                       i2 * m1->size[0] + i1,
+                       j2 * m1->size[1] + j1,
+                       GetMatrixVal(m1, i1, j1) * GetMatrixVal(m2, i2, j2));
+        }
+      }
+    }
+  }
+
+  return p;
 }
 
 /**
@@ -412,6 +470,28 @@ Matrix **MatToUT(Matrix *m) {
 }
 
 /**
+ * @func MatTrace : get the trace of matrix
+ * @param mat     : the matrix [ Matrix * ]
+ * @return trace  : the trace  [ Matrix * ]
+ * @descript      : the matrix must be squared;
+ *                  the function will return NULL,
+ *                  if the matrix has no inverse
+ */
+Matrix *MatTrace(Matrix *mat) {
+  if (mat->size[0] != mat->size[1]) {
+    fputs("The Matrix Is Not Squared!\n", stderr);
+    exit(EXIT_FAILURE);
+  }
+
+  Matrix *trace = InitMatrix(mat->size[0], 1, 0);
+  for (int i = 0; i < mat->size[0]; ++i) {
+    SetMatrixVal(trace, i, 0, GetMatrixVal(mat, i, i));
+  }
+
+  return trace;
+}
+
+/**
  * @func MatDeterminant : get the determinant of matrix
  * @param m             : the matrix      [ Matrix * ]
  * @return det          : the determinant [ double   ]
@@ -436,6 +516,84 @@ double MatDeterminant(Matrix *m) {
 }
 
 /**
+ * @func MatAlgCofactor : get the algebraic cofactor of matrix
+ * @param mat           : the matrix              [ Matrix * ]
+ * @param r             : the row                 [ int      ]
+ * @param c             : the column              [ int      ]
+ * @return algCofactor  : the algebraic cofactor  [ double   ]
+ * @descript            : r and c start from 0
+ */
+double MatAlgCofactor(Matrix *mat, int r, int c) {
+  if (mat->size[0] < 2 || mat->size[1] < 2) {
+    fputs("The Matrix So Small!\n", stderr);
+    exit(EXIT_FAILURE);
+  } else if (r >= mat->size[0] || r < 0 || c >= mat->size[1] || c < 0) {
+    fputs("The Position Is Wrong!\n", stderr);
+  }
+
+  Matrix *subMatrix = InitMatrix(mat->size[0] - 1, mat->size[1] - 1, 0);
+  for (int si = 0, i = 0; i < mat->size[0]; ++i, ++si) {
+    for (int sj = 0, j = 0; j < mat->size[1]; ++j, ++sj) {
+      if (r == i) {
+        ++i;
+      }
+      if (c == j) {
+        ++j;
+      }
+      if (i < mat->size[0] && j < mat->size[1]) {
+        SetMatrixVal(subMatrix, si, sj, GetMatrixVal(mat, i, j));
+      }
+    }
+  }
+
+  int f = (r + c) & 1 ? -1 : 1;
+  double algCofactor = f * MatDeterminant(subMatrix);
+  DestroyMatrix(subMatrix);
+
+  return algCofactor;
+}
+
+/**
+ * @func MatAdjugate : get the adjugate of matrix
+ * @param m          : the matrix          [ Matrix * ]
+ * @return mat       : the adjugate matrix [ Matrix * ]
+ * @descript         : the matrix must be squared;
+ *                     the function will return NULL,
+ *                     if the matrix has no adjugate
+ */
+Matrix *MatAdjugate(Matrix *m) {
+  if (m->size[0] != m->size[1]) {
+    fputs("The Matrix Is Not Squared!\n", stderr);
+    exit(EXIT_FAILURE);
+  }
+  if (MatDeterminant(m) == 0) {
+    fputs("The Matrix Has No Inverse!\n", stderr);
+    return NULL;
+  }
+
+  Matrix *mat = InitMatrix(m->size[0], m->size[1], 0);
+  for (int i = 0; i < mat->size[0]; ++i) {
+    for (int j = 0; j < mat->size[1]; ++j) {
+      SetMatrixVal(mat, i, j, MatAlgCofactor(m, j, i));
+    }
+  }
+
+  return mat;
+}
+
+/**
+ * @func MatInverse : get the inverse of matrix
+ * @param m         : the matrix         [ Matrix * ]
+ * @return mat      : the inverse matrix [ Matrix * ]
+ * @descript        : the matrix must be squared;
+ *                    the function will return NULL,
+ *                    if the matrix has no inverse
+ */
+Matrix *MatInverse(Matrix *m) {
+  return MatScalarDiv(MatDeterminant(m), MatAdjugate(m));
+}
+
+/**
  * @func SolveLinearEqs : solve linear equations
  * @param A             : the coefficient matrix [ Matrix * ]
  * @param b             : the vector             [ Matrix * ]
@@ -444,32 +602,7 @@ double MatDeterminant(Matrix *m) {
  *                        if no solution, function will return NULL
  */
 Matrix *SolveLinearEqs(Matrix *A, Matrix *b) {
-  if (b->size[1] != 1) {
-    fputs("b Is Not A Vector!\n", stderr);
-    exit(EXIT_FAILURE);
-  } else if (b->size[0] != A->size[0]) {
-    fputs("Size Not Matched!\n", stderr);
-    exit(EXIT_FAILURE);
-  } else if (A->size[0] != A->size[1] || GetMatrixRank(A) < A->size[0]) {
-    fputs("No Numeric Solution!\n", stderr);
-    return NULL;
-  }
-
-  Matrix **RS = MatToUT(A);
-  Matrix *v = MatMul(RS[1], b);
-  Matrix *s = InitMatrix(A->size[1], 1, 0);
-
-  PrintMatrix(v); // for debug
-
-  for (int i = A->size[0] - 1; i >= 0; --i) {
-    double d = GetMatrixVal(v, i, 0);
-    for (int j = A->size[1] - 1; j > i; --j) {
-      d -= GetMatrixVal(s, j, 0) * GetMatrixVal(RS[0], i, j);
-    }
-    SetMatrixVal(s, i, 0, d / GetMatrixVal(RS[0], i, i));
-  }
-
-  return s;
+  return MatMul(MatInverse(A), b);
 }
 
 /************************************************************

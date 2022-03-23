@@ -168,7 +168,15 @@ Matrix *MatSub(Matrix *m1, Matrix *m2);
  * @param m     : the matrix  [ Matrix * ]
  * @return mat  : the product [ Matrix * ]
  */
-Matrix *MatScalarMul(int n, Matrix *m);
+Matrix *MatScalarMul(double n, Matrix *m);
+
+/**
+ * @func MatDiv : Divide scalar with matrix
+ * @param n     : the scalar  [ int      ]
+ * @param m     : the matrix  [ Matrix * ]
+ * @return mat  : the quotient [ Matrix * ]
+ */
+Matrix *MatScalarDiv(double n, Matrix *m);
 
 /**
  * @func MatMul : multiply m1 and m2
@@ -180,6 +188,14 @@ Matrix *MatScalarMul(int n, Matrix *m);
 Matrix *MatMul(Matrix *m1, Matrix *m2);
 
 /**
+ * @func MatKronecker : the Kronecker product of m1 and m2
+ * @param m1          : the first matrix  [ Matrix * ]
+ * @param m2          : the second matrix [ Matrix * ]
+ * @return p          : the product       [ Matrix * ]
+ */
+Matrix *MatKronecker(Matrix *m1, Matrix *m2);
+
+/**
  * @func MatToUT : transform a matrix to upper triangle form
  * @param m      : the matrix [ Matrix *  ]
  * @return res   : the result [ Matrix ** ]
@@ -189,12 +205,52 @@ Matrix *MatMul(Matrix *m1, Matrix *m2);
 Matrix **MatToUT(Matrix *m);
 
 /**
+ * @func MatTrace : get the trace of matrix
+ * @param mat     : the matrix [ Matrix * ]
+ * @return trace  : the trace  [ Matrix * ]
+ * @descript      : the matrix must be squared;
+ *                  the function will return NULL,
+ *                  if the matrix has no inverse
+ */
+Matrix *MatTrace(Matrix *mat);
+
+/**
  * @func MatDeterminant : get the determinant of matrix
  * @param m             : the matrix      [ Matrix * ]
  * @return det          : the determinant [ double   ]
  * @descript            : the matrix must be squared
  */
 double MatDeterminant(Matrix *m);
+
+/**
+ * @func MatAlgCofactor : get the trace of matrix
+ * @param mat           : the matrix              [ Matrix * ]
+ * @param r             : the row                 [ int      ]
+ * @param c             : the column              [ int      ]
+ * @return algCofactor  : the algebraic cofactor  [ double   ]
+ * @descript            : r and c start from 0
+ */
+double MatAlgCofactor(Matrix *mat, int r, int c);
+
+/**
+ * @func MatAdjugate : get the adjugate of matrix
+ * @param m          : the matrix          [ Matrix * ]
+ * @return mat       : the adjugate matrix [ Matrix * ]
+ * @descript         : the matrix must be squared;
+ *                     the function will return NULL,
+ *                     if the matrix has no adjugate
+ */
+Matrix *MatAdjugate(Matrix *m);
+
+/**
+ * @func MatInverse : get the inverse of matrix
+ * @param m         : the matrix         [ Matrix * ]
+ * @return mat      : the inverse matrix [ Matrix * ]
+ * @descript        : the matrix must be squared;
+ *                    the function will return NULL,
+ *                    if the matrix has no inverse
+ */
+Matrix *MatInverse(Matrix *m);
 
 /**
  * @func SolveLinearEqs : solve linear equations

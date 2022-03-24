@@ -1,9 +1,13 @@
 #include "linalgs.h"
+#include <stdio.h>
 
 int main() {
   Matrix *m = InitMatrixByInput();
-  PrintMatrix(MatPow(m, 3));
-  PrintMatrix(MatPow(m, 0));
+  Matrix **res = MatLUD(m);
+  PrintMatrix(res[0]);
+  PrintMatrix(res[1]);
+
+  PrintMatrix(MatMul(res[1], res[0]));
 
   return 0;
 }

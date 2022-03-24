@@ -183,7 +183,7 @@ double GetMatrixVal(Matrix *mat, int r, int c) {
  */
 int GetMatrixRank(Matrix *m) {
   int r = 0;
-  Matrix **res = MatToUT(m);
+  Matrix **res = MatLUD(m);
   int l = MIN(m->size[0], m->size[1]);
   for (int i = 0; i < l; ++i) {
     if (0 == GetMatrixVal(res[0], i, i)) {
@@ -370,12 +370,22 @@ Matrix *MatMul(Matrix *m1, Matrix *m2) {
  * @return mat  : the result  [ Matrix *     ]
  * @descript    : the matrix must be squared
  */
-Matrix *MatPow(Matrix *m, unsigned int n) {
+Matrix *MatPow(Matrix *m, int n) {
   Matrix *mat = InitElemMatrix(m->size[0]);
-  for (int i = 0; i < n; ++i) {
-    Matrix *tempM = mat;
-    mat = MatMul(m, mat);
-    DestroyMatrix(tempM);
+  if (n < 0) {
+    Matrix *inv = MatInverse(m);
+    for (int i = n; i < 0; ++i) {
+      Matrix *tempM = mat;
+      mat = MatMul(inv, mat);
+      DestroyMatrix(tempM);
+    }
+    DestroyMatrix(inv);
+  } else {
+    for (int i = 0; i < n; ++i) {
+      Matrix *tempM = mat;
+      mat = MatMul(m, mat);
+      DestroyMatrix(tempM);
+    }
   }
 
   return mat;
@@ -389,18 +399,17 @@ Matrix *MatPow(Matrix *m, unsigned int n) {
  */
 Matrix *MatKronecker(Matrix *m1, Matrix *m2) {
   if (NULL == m1 || NULL == m2) {
-    fputs("The Matri Does Not Exist!\n", stderr);
+    fputs("The Matrix Does Not Exist!\n", stderr);
     exit(EXIT_FAILURE);
   }
 
-  Matrix *p = InitMatrix(m1->size[0] * m2->size[0], m1->size[1] * m2->size[1], 0);
+  Matrix *p =
+      InitMatrix(m1->size[0] * m2->size[0], m1->size[1] * m2->size[1], 0);
   for (int i1 = 0; i1 < m1->size[0]; ++i1) {
     for (int j1 = 0; j1 < m1->size[1]; ++j1) {
       for (int i2 = 0; i2 < m2->size[0]; ++i2) {
         for (int j2 = 0; j2 < m2->size[1]; ++j2) {
-          SetMatrixVal(p,
-                       i2 * m1->size[0] + i1,
-                       j2 * m1->size[1] + j1,
+          SetMatrixVal(p, i2 * m1->size[0] + i1, j2 * m1->size[1] + j1,
                        GetMatrixVal(m1, i1, j1) * GetMatrixVal(m2, i2, j2));
         }
       }
@@ -411,13 +420,13 @@ Matrix *MatKronecker(Matrix *m1, Matrix *m2) {
 }
 
 /**
- * @func MatToUT : transform a matrix to upper triangle form
- * @param m      : the matrix [ Matrix *  ]
- * @return res   : the result [ Matrix ** ]
- * @descript     : result contains R, m,
- *                 matrix must be squared
+ * @func MatLUD : LU Decomposition
+ * @param m     : the matrix [ Matrix *  ]
+ * @return res  : the result [ Matrix ** ]
+ * @descript    : result contains R, L,
+ *                matrix must be squared
  */
-Matrix **MatToUT(Matrix *m) {
+Matrix **MatLUD(Matrix *m) {
   if (m == NULL) {
     fputs("Null Pointer Error!\n", stderr);
     exit(EXIT_FAILURE);
@@ -461,6 +470,9 @@ Matrix **MatToUT(Matrix *m) {
 
         if (j == mat->size[0] - 1) {
           res[0] = MatScalarMul(factor, mat);
+          Matrix *e = res[1];
+          res[1] = MatInverse(res[1]);
+          DestroyMatrix(e);
           DestroyMatrix(mat);
           return res;
         }
@@ -483,7 +495,11 @@ Matrix **MatToUT(Matrix *m) {
   }
 
   res[0] = MatScalarMul(factor, mat);
+  Matrix *e = res[1];
+  res[1] = MatInverse(res[1]);
+  DestroyMatrix(e);
   DestroyMatrix(mat);
+
   return res;
 }
 
@@ -521,7 +537,7 @@ double MatDeterminant(Matrix *m) {
     exit(EXIT_FAILURE);
   }
 
-  Matrix **res = MatToUT(m);
+  Matrix **res = MatLUD(m);
   double det = 1;
   for (int i = 0; i < res[0]->size[0]; ++i) {
     det *= GetMatrixVal(res[0], i, i);
@@ -628,29 +644,9 @@ Matrix *SolveLinearEqs(Matrix *A, Matrix *b) {
  * @param mat      : the matrix       [ Matrix *  ]
  * @return sys     : the eigen system [ Matrix ** ]
  */
-Matrix **SolveEigs(Matrix *mat) {
-  return NULL;
-}
+Matrix **SolveEigs(Matrix *mat) { return NULL; }
 
-/************************************************************
- * some vector manipulations -- based on matrix manipulations
- ************************************************************/
+// TODO
+// Need more decomposition functions
 
-/**
- * @func VecAdd : add up two vectors
- * @param v1    : the first vector       [ Matrix * ]
- * @param v2    : the second vector      [ Matrix * ]
- * @return vec  : the sum of two vectors [ Matrix * ]
- * @descript    : vectors has orientation
- *                if orientations are not matched
- *                function will exit with failure
- */
-Matrix *VecAdd(Matrix *v1, Matrix *v2) {
-  if ((v1->size[0] != 1 && v1->size[1] != 1) ||
-      (v2->size[0] != 1 && v2->size[1] != 1)) {
-    fputs("The Function Is for Vectors!\n", stderr);
-    exit(EXIT_FAILURE);
-  }
-
-  return MatAdd(v1, v2);
-}
+// Vector is matrix! No need more functions

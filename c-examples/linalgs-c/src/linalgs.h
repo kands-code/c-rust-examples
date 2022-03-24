@@ -194,7 +194,7 @@ Matrix *MatMul(Matrix *m1, Matrix *m2);
  * @return mat  : the result  [ Matrix *     ]
  * @descript    : the matrix must be squared
  */
-Matrix *MatPow(Matrix *m, unsigned int n);
+Matrix *MatPow(Matrix *m, int n);
 
 /**
  * @func MatKronecker : the Kronecker product of m1 and m2
@@ -205,13 +205,13 @@ Matrix *MatPow(Matrix *m, unsigned int n);
 Matrix *MatKronecker(Matrix *m1, Matrix *m2);
 
 /**
- * @func MatToUT : transform a matrix to upper triangle form
- * @param m      : the matrix [ Matrix *  ]
- * @return res   : the result [ Matrix ** ]
- * @descript     : result contains R, m,
- *                 matrix must be squared
+ * @func MatLUD : LU Decomposition
+ * @param m     : the matrix [ Matrix *  ]
+ * @return res  : the result [ Matrix ** ]
+ * @descript    : result contains R, L,
+ *                matrix must be squared
  */
-Matrix **MatToUT(Matrix *m);
+Matrix **MatLUD(Matrix *m);
 
 /**
  * @func MatTrace : get the trace of matrix
@@ -276,19 +276,9 @@ Matrix *SolveLinearEqs(Matrix *A, Matrix *b);
  * @param mat      : the matrix       [ Matrix *  ]
  * @return sys     : the eigen system [ Matrix ** ]
  */
- Matrix **SolveEigs(Matrix *mat);
+Matrix **SolveEigs(Matrix *mat);
 
-/************************************************************
- * some vector manipulations -- based on matrix manipulations
- ************************************************************/
+// TODO
+// Need more decomposition functions
 
-/**
- * @func VecAdd : add up two vectors
- * @param v1    : the first vector       [ Matrix * ]
- * @param v2    : the second vector      [ Matrix * ]
- * @return vec  : the sum of two vectors [ Matrix * ]
- * @descript    : vectors has orientation,
- *                if orientations are not matched,
- *                function will exit with failure
- */
-Matrix *VecAdd(Matrix *v1, Matrix *v2);
+// Vector is matrix! No need more functions

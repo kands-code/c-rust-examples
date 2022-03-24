@@ -188,6 +188,15 @@ Matrix *MatScalarDiv(double n, Matrix *m);
 Matrix *MatMul(Matrix *m1, Matrix *m2);
 
 /**
+ * @func MatPow : the power of matrix
+ * @param m     : the matrix  [ Matrix *     ]
+ * @param n     : the power   [ unsigned int ]
+ * @return mat  : the result  [ Matrix *     ]
+ * @descript    : the matrix must be squared
+ */
+Matrix *MatPow(Matrix *m, unsigned int n);
+
+/**
  * @func MatKronecker : the Kronecker product of m1 and m2
  * @param m1          : the first matrix  [ Matrix * ]
  * @param m2          : the second matrix [ Matrix * ]
@@ -257,10 +266,17 @@ Matrix *MatInverse(Matrix *m);
  * @param A             : the coefficient matrix [ Matrix * ]
  * @param b             : the vector             [ Matrix * ]
  * @return s            : the solution           [ Matrix * ]
- * @descript            : b must be col vector;
- *                        if no solution, function will return NULL
+ * @descript            : b must be col vector
  */
 Matrix *SolveLinearEqs(Matrix *A, Matrix *b);
+
+/**
+ * TODO
+ * @func SolveEigs : solve the eigen system of matrix
+ * @param mat      : the matrix       [ Matrix *  ]
+ * @return sys     : the eigen system [ Matrix ** ]
+ */
+ Matrix **SolveEigs(Matrix *mat);
 
 /************************************************************
  * some vector manipulations -- based on matrix manipulations

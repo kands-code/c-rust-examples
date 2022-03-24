@@ -1,6 +1,9 @@
 #include "linalgs.h"
 
 int main() {
-  PrintMatrix(MatKronecker(InitMatrixByInput(), InitMatrixByInput()));
+  Matrix *m = InitMatrixByInput();
+  PrintMatrix(MatPow(m, 3));
+  PrintMatrix(MatPow(m, 0));
+
   return 0;
 }

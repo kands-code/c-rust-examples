@@ -3,12 +3,11 @@
 
 int main() {
   Matrix *m = InitMatrixByInput();
-  PrintMatrix(MatLUD(m)[0]);
-  PrintMatrix(MatInverse(MatLUD(m)[1]));
+  LUDR *res = MatLUD(m);
+  PrintMatrix(res->mats[0]);
+  PrintMatrix(res->mats[1]);
 
-  Matrix *b = InitMatrixByInput();
-
-  PrintMatrix(SolveLinearEqs(m, b));
+  PrintMatrix(SolveLinearEqs(m, InitMatrixByInput()));
 
   return 0;
 }

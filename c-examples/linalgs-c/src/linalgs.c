@@ -170,7 +170,7 @@ void PrintMatrix(Matrix *mat) { PrintMatrixP(mat, 2); }
  */
 double GetMatrixVal(Matrix *mat, int r, int c) {
   if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
-    fputs("Wrong Position!\n", stderr);
+    fputs("Get Wrong Position!\n", stderr);
     exit(EXIT_FAILURE);
   }
   return mat->data[r * mat->size[1] + c];
@@ -183,17 +183,17 @@ double GetMatrixVal(Matrix *mat, int r, int c) {
  */
 int GetMatrixRank(Matrix *m) {
   int r = 0;
-  Matrix **res = MatLUD(m);
+  LUDR *res = MatLUD(m);
   int l = MIN(m->size[0], m->size[1]);
   for (int i = 0; i < l; ++i) {
-    if (0 == GetMatrixVal(res[0], i, i)) {
+    if (0 == GetMatrixVal(res->mats[0], i, i)) {
       break;
     }
     r++;
   }
 
-  DestroyMatrix(res[0]);
-  DestroyMatrix(res[1]);
+  DestroyMatrix(res->mats[0]);
+  DestroyMatrix(res->mats[1]);
   free(res);
 
   return r;
@@ -209,7 +209,7 @@ int GetMatrixRank(Matrix *m) {
  */
 void SetMatrixVal(Matrix *mat, int r, int c, double v) {
   if (r < 0 || r >= mat->size[0] || c < 0 || c >= mat->size[1]) {
-    fputs("Wrong Position!\n", stderr);
+    fputs("Set Wrong Position!\n", stderr);
     exit(EXIT_FAILURE);
   }
 
@@ -312,16 +312,17 @@ Matrix *MatScalarMul(double n, Matrix *m) {
 }
 
 /**
- * @func MatDiv : Divide scalar with matrix
- * @param n     : the scalar  [ int      ]
- * @param m     : the matrix  [ Matrix * ]
+ * @func MatDiv : matrix divided by scalar
+ * @param n     : the scalar   [ double   ]
+ * @param m     : the matrix   [ Matrix * ]
  * @return mat  : the quotient [ Matrix * ]
  */
-Matrix *MatScalarDiv(double n, Matrix *m) {
+Matrix *MatScalarDiv(Matrix *m, double n) {
+  const double ESP = 1E-7;
   if (m == NULL) {
     fputs("Null Pointer Error!\n", stderr);
     exit(EXIT_FAILURE);
-  } else if (n == 0) {
+  } else if (n < ESP) {
     fputs("Divided By Zero!\n", stderr);
     exit(EXIT_FAILURE);
   }
@@ -422,78 +423,75 @@ Matrix *MatKronecker(Matrix *m1, Matrix *m2) {
 
 /**
  * @func MatLUD : LU Decomposition
- * @param m     : the matrix [ Matrix *  ]
- * @return res  : the result [ Matrix ** ]
+ * @param m     : the matrix [ Matrix * ]
+ * @return res  : the result [ LUDR *   ]
  * @descript    : result contains R, L^-1,
  *                matrix must be squared
  */
-Matrix **MatLUD(Matrix *m) {
+LUDR *MatLUD(Matrix *m) {
   if (m == NULL) {
     fputs("Null Pointer Error!\n", stderr);
     exit(EXIT_FAILURE);
   }
 
-  // the factor, count the number of row changes
-  int factor = 1;
-  Matrix **res = calloc(2, sizeof(Matrix *));
-  res[1] = InitElemMatrix(m->size[0]);
+  // the result
+  LUDR *res = calloc(1, sizeof(LUDR));
+  res->fac = 1;
+  res->mats = calloc(2, sizeof(Matrix *));
+  res->mats[1] = InitElemMatrix(m->size[0]);
 
   // copy the matrix
-  Matrix *mat = InitMatrix(m->size[0], m->size[1], 0);
+  res->mats[0] = InitMatrix(m->size[0], m->size[1], 0);
   for (int i = 0; i < m->size[0]; ++i) {
     for (int j = 0; j < m->size[1]; ++j) {
-      SetMatrixVal(mat, i, j, GetMatrixVal(m, i, j));
+      SetMatrixVal(res->mats[0], i, j, GetMatrixVal(m, i, j));
     }
   }
 
-  for (int i = 0; i < mat->size[0] - 1; ++i) {
+  for (int i = 0; i < res->mats[0]->size[0] - 1; ++i) {
     // check pivot
     // if pivot is zero, then change rows
-    if (0 == GetMatrixVal(mat, i, i)) {
+    if (0 == GetMatrixVal(res->mats[0], i, i)) {
       Matrix *tempE = InitElemMatrix(m->size[0]);
-      for (int j = i + 1; j < mat->size[0]; ++j) {
+      for (int j = i + 1; j < res->mats[0]->size[0]; ++j) {
         // change the row with non-zero row
-        if (0 != GetMatrixVal(mat, j, i)) {
-          for (int k = 0; k < mat->size[1]; ++k) {
-            double temp = GetMatrixVal(mat, i, k);
-            SetMatrixVal(mat, i, k, GetMatrixVal(mat, j, k));
-            SetMatrixVal(mat, j, k, temp);
+        if (0 != GetMatrixVal(res->mats[0], j, i)) {
+          for (int k = 0; k < res->mats[0]->size[1]; ++k) {
+            double temp = GetMatrixVal(res->mats[0], i, k);
+            SetMatrixVal(res->mats[0], i, k, GetMatrixVal(res->mats[0], j, k));
+            SetMatrixVal(res->mats[0], j, k, temp);
           }
           SetMatrixVal(tempE, i, i, 0);
           SetMatrixVal(tempE, j, j, 0);
           SetMatrixVal(tempE, i, j, 1);
           SetMatrixVal(tempE, j, i, 1);
-          res[1] = MatMul(tempE, res[1]);
+          res->mats[1] = MatMul(tempE, res->mats[1]);
           DestroyMatrix(tempE);
-          factor *= -1;
+          res->fac *= -1;
           break;
         }
 
-        if (j == mat->size[0] - 1) {
-          res[0] = MatScalarMul(factor, mat);
-          DestroyMatrix(mat);
+        if (j == res->mats[0]->size[0] - 1) {
           return res;
         }
       }
     }
 
     // if pivot is non-zero, then do reduce
-    Matrix *tempE = InitElemMatrix(mat->size[0]);
-    for (int j = i + 1; j < mat->size[0]; ++j) {
-      double v = GetMatrixVal(mat, j, i) / GetMatrixVal(mat, i, i);
-      for (int k = i; k < mat->size[1]; ++k) {
-        SetMatrixVal(mat, j, k,
-                     GetMatrixVal(mat, j, k) - v * GetMatrixVal(mat, i, k));
+    Matrix *tempE = InitElemMatrix(res->mats[0]->size[0]);
+    for (int j = i + 1; j < res->mats[0]->size[0]; ++j) {
+      double v =
+          GetMatrixVal(res->mats[0], j, i) / GetMatrixVal(res->mats[0], i, i);
+      for (int k = i; k < res->mats[0]->size[1]; ++k) {
+        SetMatrixVal(res->mats[0], j, k,
+                     GetMatrixVal(res->mats[0], j, k) -
+                         v * GetMatrixVal(res->mats[0], i, k));
       }
       SetMatrixVal(tempE, j, i, -v);
-      // PrintMatrix(mat); // for debug, print the matrix
     }
-    res[1] = MatMul(tempE, res[1]);
+    res->mats[1] = MatMul(tempE, res->mats[1]);
     DestroyMatrix(tempE);
   }
-
-  res[0] = MatScalarMul(factor, mat);
-  DestroyMatrix(mat);
 
   return res;
 }
@@ -532,14 +530,15 @@ double MatDeterminant(Matrix *m) {
     exit(EXIT_FAILURE);
   }
 
-  Matrix **res = MatLUD(m);
+  LUDR *res = MatLUD(m);
   double det = 1;
-  for (int i = 0; i < res[0]->size[0]; ++i) {
-    det *= GetMatrixVal(res[0], i, i);
+  for (int i = 0; i < res->mats[0]->size[0]; ++i) {
+    det *= GetMatrixVal(res->mats[0], i, i);
   }
+  det *= res->fac;
 
-  DestroyMatrix(res[0]);
-  DestroyMatrix(res[1]);
+  DestroyMatrix(res->mats[0]);
+  DestroyMatrix(res->mats[1]);
   free(res);
 
   return det;
@@ -562,21 +561,23 @@ double MatAlgCofactor(Matrix *mat, int r, int c) {
   }
 
   Matrix *subMatrix = InitMatrix(mat->size[0] - 1, mat->size[1] - 1, 0);
-  for (int si = 0, i = 0; i < mat->size[0]; ++i, ++si) {
-    for (int sj = 0, j = 0; j < mat->size[1]; ++j, ++sj) {
-      if (r == i) {
-        ++i;
+  int rc = 0;
+  for (int i = 0; i < mat->size[0]; ++i) {
+    int cc = 0;
+    if (i == r) {
+      rc = 1;
+      continue;
+    }
+    for (int j = 0; j < mat->size[1]; ++j) {
+      if (j == c) {
+        cc = 1;
+        continue;
       }
-      if (c == j) {
-        ++j;
-      }
-      if (i < mat->size[0] && j < mat->size[1]) {
-        SetMatrixVal(subMatrix, si, sj, GetMatrixVal(mat, i, j));
-      }
+      SetMatrixVal(subMatrix, i - rc, j - cc, GetMatrixVal(mat, i, j));
     }
   }
 
-  int f = (r + c) & 1 ? -1 : 1;
+  int f = r + c & 1 ? -1 : 1;
   double algCofactor = f * MatDeterminant(subMatrix);
   DestroyMatrix(subMatrix);
 
@@ -620,7 +621,7 @@ Matrix *MatAdjugate(Matrix *m) {
  *                    if the matrix has no inverse
  */
 Matrix *MatInverse(Matrix *m) {
-  return MatScalarDiv(MatDeterminant(m), MatAdjugate(m));
+  return MatScalarDiv(MatAdjugate(m), MatDeterminant(m));
 }
 
 /**

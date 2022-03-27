@@ -39,6 +39,16 @@ typedef struct {
   int size[2];
 } Matrix;
 
+/**
+ * @type LUDR  : the return type of LU decomposition
+ * @content mats : the matrices [ Matrix ** ]
+ * @content fac  : the factor   [ int       ]
+ */
+typedef struct {
+  Matrix **mats;
+  int fac;
+} LUDR;
+
 /************************************************************
  * Init the matrix
  ************************************************************/
@@ -171,12 +181,12 @@ Matrix *MatSub(Matrix *m1, Matrix *m2);
 Matrix *MatScalarMul(double n, Matrix *m);
 
 /**
- * @func MatDiv : Divide scalar with matrix
- * @param n     : the scalar  [ int      ]
- * @param m     : the matrix  [ Matrix * ]
+ * @func MatDiv : matrix divided by scalar
+ * @param n     : the scalar   [ double   ]
+ * @param m     : the matrix   [ Matrix * ]
  * @return mat  : the quotient [ Matrix * ]
  */
-Matrix *MatScalarDiv(double n, Matrix *m);
+Matrix *MatScalarDiv(Matrix *m, double n);
 
 /**
  * @func MatMul : multiply m1 and m2
@@ -206,12 +216,12 @@ Matrix *MatKronecker(Matrix *m1, Matrix *m2);
 
 /**
  * @func MatLUD : LU Decomposition
- * @param m     : the matrix [ Matrix *  ]
- * @return res  : the result [ Matrix ** ]
+ * @param m     : the matrix [ Matrix * ]
+ * @return res  : the result [ LUDR *   ]
  * @descript    : result contains R, L^-1,
  *                matrix must be squared
  */
-Matrix **MatLUD(Matrix *m);
+LUDR *MatLUD(Matrix *m);
 
 /**
  * @func MatTrace : get the trace of matrix

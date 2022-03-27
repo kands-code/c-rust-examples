@@ -23,6 +23,8 @@ jobs:
     - name: check
       run: echo "$PWD"
       
-    - name: list
-      run: ls -alRh
+    - name: change
+      run: cd "$PWD"/c-examples/c-linalgs
       
+    - name: test
+      run: ls -alhR

@@ -23,8 +23,5 @@ jobs:
     - name: check
       run: echo "$PWD"
       
-    - name: change
-      run: cd "$PWD"/c-examples/linalgs-c/src
-      
-    - name: test
-      run: ls -alhR
+    - name: build
+      run: cd "$PWD"/c-examples/linalgs-c/src; . build.sh

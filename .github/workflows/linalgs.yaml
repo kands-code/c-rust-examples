@@ -1,0 +1,17 @@
+name: Generate Static Libs
+on: push
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Change Directory
+        run: cd "$HOME"/c-rust-examples/c-examples/c-linalgs/src
+
+      - name: Configuration
+        run: . ./configure.sh
+
+      - name: Build
+        run: . ./build.sh

@@ -24,4 +24,18 @@ jobs:
       run: echo "$PWD"
       
     - name: build
-      run: cd "$PWD"/c-examples/linalgs-c/src; . build.sh
+      run: |
+        cd "$PWD"/c-examples/linalgs-c/src
+        . build.sh
+      
+    - name: pack
+      run: |
+        zip libs.zip "$PWD"/c-examples/linalgs-c/src/output/liblinalgs.a "$PWD"/c-examples/linalgs-c/src/linalgs.h
+        zip src.zip "$PWD"/c-examples/linalgs-c/src/linalgs.c "$PWD"/c-examples/linalgs-c/src/linalgs.h
+      
+    - name: release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          libs.zip
+          src.zip

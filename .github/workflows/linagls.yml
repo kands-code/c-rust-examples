@@ -2,9 +2,8 @@ name: linalgs
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - "v*.*.*"
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)

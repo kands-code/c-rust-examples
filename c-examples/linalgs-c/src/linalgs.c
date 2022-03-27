@@ -194,6 +194,7 @@ int GetMatrixRank(Matrix *m) {
 
   DestroyMatrix(res[0]);
   DestroyMatrix(res[1]);
+  free(res);
 
   return r;
 }
@@ -423,7 +424,7 @@ Matrix *MatKronecker(Matrix *m1, Matrix *m2) {
  * @func MatLUD : LU Decomposition
  * @param m     : the matrix [ Matrix *  ]
  * @return res  : the result [ Matrix ** ]
- * @descript    : result contains R, L,
+ * @descript    : result contains R, L^-1,
  *                matrix must be squared
  */
 Matrix **MatLUD(Matrix *m) {
@@ -470,9 +471,6 @@ Matrix **MatLUD(Matrix *m) {
 
         if (j == mat->size[0] - 1) {
           res[0] = MatScalarMul(factor, mat);
-          Matrix *e = res[1];
-          res[1] = MatInverse(res[1]);
-          DestroyMatrix(e);
           DestroyMatrix(mat);
           return res;
         }
@@ -495,9 +493,6 @@ Matrix **MatLUD(Matrix *m) {
   }
 
   res[0] = MatScalarMul(factor, mat);
-  Matrix *e = res[1];
-  res[1] = MatInverse(res[1]);
-  DestroyMatrix(e);
   DestroyMatrix(mat);
 
   return res;
@@ -545,6 +540,7 @@ double MatDeterminant(Matrix *m) {
 
   DestroyMatrix(res[0]);
   DestroyMatrix(res[1]);
+  free(res);
 
   return det;
 }

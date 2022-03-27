@@ -208,7 +208,7 @@ Matrix *MatKronecker(Matrix *m1, Matrix *m2);
  * @func MatLUD : LU Decomposition
  * @param m     : the matrix [ Matrix *  ]
  * @return res  : the result [ Matrix ** ]
- * @descript    : result contains R, L,
+ * @descript    : result contains R, L^-1,
  *                matrix must be squared
  */
 Matrix **MatLUD(Matrix *m);

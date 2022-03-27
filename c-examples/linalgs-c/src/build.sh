@@ -1,10 +1,14 @@
 #/usr/bin/env bash
 # build
-if [ -d output ]
+path=$PWD
+if [[ (-d "$path"/output) && (-f "$path"/CMakeLists.txt) ]]
 then
+  echo "Start Build"
   cd output
   make
+  rm "$path"/CMakeLists.txt
 else
-  ./configure.sh
-  ./build.sh
+  # default build a lib
+  "$path"/configure.sh lib
+  "$path"/build.sh
 fi

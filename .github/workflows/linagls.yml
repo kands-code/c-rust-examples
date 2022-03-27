@@ -1,4 +1,4 @@
-name: CMake
+name: linalgs
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       run: echo "$PWD"
       
     - name: change
-      run: cd "$PWD"/c-examples/c-linalgs
+      run: cd "$PWD"/c-examples/linalgs-c/src
       
     - name: test
       run: ls -alhR

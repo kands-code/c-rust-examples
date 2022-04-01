@@ -5,9 +5,15 @@ if [[ -z "$@" ]]
 then
   echo "Please give an option!" >&2
   exit
+elif [[ $# != 2 ]]
+then
+  echo "usage: ./configure.sh [type] [platform]"
+  echo "type: exe or lib"
+  echo "platform: win or linux"
+  exit
 fi
 
-case ${1} in
+case "$1" in
   "exe")
     cp "$path"/CMakeLists-exe.txt "$path"/CMakeLists.txt
     ;;
@@ -20,11 +26,27 @@ case ${1} in
     ;;
 esac
 
+case "$2" in
+  "win")
+    gen="MinGW Makefiles"
+    ;;
+  "linux")
+    gen="Unix Makefiles"
+    ;;
+  *)
+    echo "Wrong Platform!" >&2
+    exit
+    ;;
+esac
+
 if [[ -d "$path"/output ]]
 then
   rm -r "$path"/output
 fi
-cmake -S . -B output -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -Wdev -Wdeprecated
+cmake -S . -B output -DCMAKE_BUILD_TYPE=Debug \
+                     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                     -Wdev -Wdeprecated \
+                     -G "$gen"
 if [ -f "$path"/output/compile_commands.json ]
 then
   cp "$path"/output/compile_commands.json "$path"/

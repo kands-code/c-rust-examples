@@ -1,14 +1,45 @@
 #/usr/bin/env bash
 # build
 path=$PWD
-if [[ (-d "$path"/output) && (-f "$path"/CMakeLists.txt) ]]
+
+function prog_exist {
+  local ret="0"
+  command -v "$1" > /dev/null || ret="1"
+  echo ${ret}
+}
+
+if [ $# -eq 0 ]
 then
-  echo "Start Build"
-  cd output
-  make
-  rm "$path"/CMakeLists.txt
+  if [[ (-d "$path"/output) && (-f "$path"/CMakeLists.txt) ]]
+  then
+    echo "Start Build"
+    cd output
+
+    if [ "$(prog_exist make)" -eq "0" ]
+    then
+      echo "Platform is Linux"
+      make
+    else
+      echo "Platform is Windows"
+      mingw32-make
+    fi
+
+    rm "$path"/CMakeLists.txt
+  else
+    # default build a lib
+    "$path"/configure.sh lib linux
+    "$path"/build.sh
+  fi
 else
-  # default build a lib
-  "$path"/configure.sh lib
-  "$path"/build.sh
+  case "$1" in
+    "clean")
+      rm -r output
+      rm compile_commands.json
+      ;;
+    *)
+      echo "Wrong subcommand!" >&2
+      echo "command: clean" >&2
+      exit
+      ;;
+  esac
 fi

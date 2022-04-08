@@ -35,6 +35,10 @@ else
     "clean")
       rm -r output
       rm compile_commands.json
+      if [ -d .cache ]
+      then
+        rm -r .cache
+      fi
       ;;
     *)
       echo "Wrong subcommand!" >&2

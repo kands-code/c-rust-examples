@@ -142,7 +142,7 @@ void PrintMatrixP(Matrix *mat, int p) {
     fputs("The Matrix Is Not Exist!\n", stderr);
     return;
   }
-  puts("<<Matrix");
+  puts("\n<<Matrix");
   for (int i = 0; i < mat->size[0]; ++i) {
     printf(" [ ");
     for (int j = 0; j < mat->size[1]; ++j) {
@@ -150,7 +150,7 @@ void PrintMatrixP(Matrix *mat, int p) {
     }
     printf("]\n");
   }
-  puts("Matrix>>");
+  puts("Matrix>>\n");
 }
 
 /**

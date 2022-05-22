@@ -100,6 +100,7 @@ Matrix *InitMatrixFromArray(int r, int c, int len, const double *arr) {
 Matrix *InitMatrixByInput() {
   int r, c;
   printf("Input the Size of Matrix (r, c): ");
+  fflush(stdout);
   scanf("%d %d", &r, &c);
 
   Matrix *mat = calloc(1, sizeof(Matrix));
@@ -145,8 +146,10 @@ void PrintMatrixP(Matrix *mat, int p) {
   puts("\n<<Matrix");
   for (int i = 0; i < mat->size[0]; ++i) {
     printf(" [ ");
+    fflush(stdout);
     for (int j = 0; j < mat->size[1]; ++j) {
       printf("%-*.*f ", p + 3, p, GetMatrixVal(mat, i, j));
+      fflush(stdout);
     }
     printf("]\n");
   }

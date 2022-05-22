@@ -2,10 +2,9 @@
 #include <stdio.h>
 
 int main() {
-  Matrix *m1 = InitMatrixByInput();
-  Matrix *m2 = InitMatrixByInput();
+  Matrix *m = InitMatrixByInput();
 
-  PrintMatrix(MatMul(m1, m2));
+  PrintMatrix(m);
 
   return 0;
 }

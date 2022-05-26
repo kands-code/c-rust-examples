@@ -1,9 +1,25 @@
 use std::io::BufRead;
 
+pub fn permutation<T>(v: &Vec<T>) -> Vec<Vec<T>>
+    where
+        T: Clone,
+{
+    let mut elem = v.clone();
+    let mut perm: Vec<Vec<T>> = Vec::new();
+    perm.push(elem.clone());
+    for _ in 1..v.len() {
+        let mut s = elem[1..].to_vec();
+        s.push(elem[0].clone());
+        perm.push(s.clone());
+        elem = s;
+    }
+    perm
+}
+
 pub fn get_input_vec<T>() -> Vec<T>
-where
-    T: std::str::FromStr,
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
+    where
+        T: std::str::FromStr,
+        <T as std::str::FromStr>::Err: std::fmt::Debug,
 {
     std::io::stdin()
         .lock()

@@ -39,17 +39,17 @@ case "$2" in
     ;;
 esac
 
-if [[ -d "$path"/output ]]
+if [[ -d "$path"/../output ]]
 then
-  rm -r "$path"/output
+  rm -r "$path"/../output
 fi
-cmake -S . -B output -DCMAKE_BUILD_TYPE=Debug \
-                     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-                     -Wdev -Wdeprecated \
-                     -G "$gen"
-if [ -f "$path"/output/compile_commands.json ]
+cmake -S . -B ../output -DCMAKE_BUILD_TYPE=Debug \
+                        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                        -Wdev -Wdeprecated \
+                        -G "$gen"
+if [ -f "$path"/../output/compile_commands.json ]
 then
-  cp "$path"/output/compile_commands.json "$path"/
+  cp "$path"/../output/compile_commands.json "$path"/
 else
   echo "Generate compile_commands.json failed!" >&2
 fi

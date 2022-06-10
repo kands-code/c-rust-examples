@@ -15,7 +15,7 @@ char *strSep(char **stringPtr, const char *delim) {
   return rv;
 }
 
-char **split(const char *str, char *delim, int *length) {
+char **strSplit(const char *str, char *delim, int *length) {
   char *s = strdup(str);
   char *token;
   int n = 0;
@@ -29,4 +29,27 @@ char **split(const char *str, char *delim, int *length) {
   }
   (*length) = n;
   return strings;
+}
+
+char *strTrim(const char *str) {
+  if (NULL == str) {
+    return NULL;
+  } else if (strlen(str) == 0) {
+    return "";
+  }
+
+  size_t strLen = strlen(str);
+  size_t start = 0;
+  while (start < strLen - 1 && isspace(str[start])) {
+    start++;
+  }
+  size_t end = strLen - 1;
+  while (end >= start && isspace(str[end])) {
+    end--;
+  }
+  char *res = (char *)calloc(end - start + 2, sizeof(char));
+  strncpy(res, str + start, end - start + 1);
+  res[end - start + 1] = '\0';
+
+  return res;
 }

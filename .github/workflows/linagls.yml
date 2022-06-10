@@ -25,7 +25,7 @@ jobs:
 
       - name: pack
         run: |
-          zip jcvf libs.zip "$PWD"/c-examples/linalgs-c/src/output/liblinalgs.a "$PWD"/c-examples/linalgs-c/src/linalgs.h
+          zip jcvf libs.zip "$PWD"/c-examples/linalgs-c/output/liblinalgs.a "$PWD"/c-examples/linalgs-c/src/linalgs.h
           zip jcvf src.zip "$PWD"/c-examples/linalgs-c/src/linalgs.c "$PWD"/c-examples/linalgs-c/src/linalgs.h
 
       - name: release

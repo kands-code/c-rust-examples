@@ -10,10 +10,10 @@ function prog_exist {
 
 if [ $# -eq 0 ]
 then
-  if [[ (-d "$path"/output) && (-f "$path"/CMakeLists.txt) ]]
+  if [[ (-d "$path"/../output) && (-f "$path"/CMakeLists.txt) ]]
   then
     echo "Start Build"
-    cd output
+    cd ../output
 
     if [ "$(prog_exist make)" -eq "0" ]
     then
@@ -33,7 +33,7 @@ then
 else
   case "$1" in
     "clean")
-      rm -r output
+      rm -r ../output
       rm compile_commands.json
       if [ -d .cache ]
       then

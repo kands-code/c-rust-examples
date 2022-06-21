@@ -13,17 +13,7 @@ then
   if [[ (-d "$path"/../output) && (-f "$path"/CMakeLists.txt) ]]
   then
     echo "Start Build"
-    cd ../output
-
-    if [ "$(prog_exist make)" -eq "0" ]
-    then
-      echo "Platform is Linux"
-      make
-    else
-      echo "Platform is Windows"
-      mingw32-make
-    fi
-
+    cmake --build ../output
     rm "$path"/CMakeLists.txt
   else
     # default build a lib

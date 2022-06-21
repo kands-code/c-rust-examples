@@ -14,10 +14,9 @@ then
   then
     echo "Start Build"
     cmake --build ../output
-    rm "$path"/CMakeLists.txt
   else
     # default build a lib
-    "$path"/configure.sh lib linux
+    "$path"/configure.sh linux
     "$path"/build.sh
   fi
 else

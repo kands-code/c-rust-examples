@@ -5,28 +5,14 @@ if [[ -z "$@" ]]
 then
   echo "Please give an option!" >&2
   exit
-elif [[ $# != 2 ]]
+elif [[ $# != 1 ]]
 then
-  echo "usage: ./configure.sh [type] [platform]"
-  echo "type: exe or lib"
+  echo "usage: ./configure.sh [platform]"
   echo "platform: win or linux"
   exit
 fi
 
 case "$1" in
-  "exe")
-    cp "$path"/CMakeLists-exe.txt "$path"/CMakeLists.txt
-    ;;
-  "lib" )
-    cp "$path"/CMakeLists-lib.txt "$path"/CMakeLists.txt
-    ;;
-  *)
-    echo "Wrong Parameter!" >&2
-    exit
-    ;;
-esac
-
-case "$2" in
   "win")
     gen="MinGW Makefiles"
     ;;

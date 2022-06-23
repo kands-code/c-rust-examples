@@ -1,9 +1,13 @@
-#include "linear-list/sl-list.h"
+#include "LinkedList.h"
+#include "utils.h"
 #include <stdio.h>
 
 int main(void) {
-    SL_List L = SL_Sington();
-    SL_InsertBefore(L, 1, 10);
-    printf("%d\n", SL_Length(L));
-    return 0;
+  ElemType elems[5] = {1, 3, 5, 7, 9};
+  LinkedList *ll = InitLinkedListFromArray(5, elems);
+  PrintLinkedList(ll);
+  reversedLinkedList(ll);
+  PrintLinkedList(ll);
+
+  return 0;
 }

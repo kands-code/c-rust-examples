@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.21)
-project(linalgs C)
 
+set(CMAKE_C_COMPILER "C:/Users/kands/sdk/mingw64/bin/clang.exe")
 set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_FLAGS_DEBUG "-g")
 
-set(SOURCE_FILES linear-list/sq-list.c linear-list/sl-list.c)
+project(dsa-c C)
 
-add_executable(test_c main.c ${SOURCE_FILES})
+add_subdirectory(collections)
+
+add_executable(${PROJECT_NAME} main.c)
+
+target_link_libraries(${PROJECT_NAME} collections)

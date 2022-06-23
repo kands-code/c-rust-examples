@@ -102,6 +102,7 @@ cmake-build-debug/
 
 # others
 output/
+build/
 .cache/
 
 ## Rust

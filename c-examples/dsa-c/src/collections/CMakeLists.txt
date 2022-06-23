@@ -1,5 +1,5 @@
 add_library(collections STATIC
-    sq-list.c
+    ArrayList.c
     LinkedList.c
 )
 

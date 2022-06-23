@@ -95,7 +95,7 @@ LinkedList *InitLinkedListFromArray(const size_t len, ElemType elems[len]) {
 
 /**
  * @func DestoryLinkedList : destory the linked list
- * @param linkedList : the linkedList [ LinkedList * ]
+ * @param linkedList : the linked list [ LinkedList * ]
  */
 void DestoryLinkedList(LinkedList *linkedList) {
   Node *node = linkedList->head;

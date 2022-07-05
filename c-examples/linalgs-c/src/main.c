@@ -4,7 +4,7 @@
 int main() {
   Matrix *m = InitMatrixByInput();
 
-  PrintMatrix(m);
+  PrintMatrix(MatInverse(m));
 
   return 0;
 }

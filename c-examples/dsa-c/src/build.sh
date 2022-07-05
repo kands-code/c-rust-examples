@@ -4,7 +4,8 @@ if [[ $# != 1 ]]
 then
     cmake -B build \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
-          -G "Ninja"
+          -G "Unix Makefiles" # linux plantform
+          # -G "Ninja" # windows plantform
     if [[ -f "$cur/build/compile_commands.json" ]]
     then
         cp "$cur/build/compile_commands.json" ./

@@ -94,10 +94,10 @@ LinkedList *InitLinkedListFromArray(const size_t len, ElemType elems[len]) {
 }
 
 /**
- * @func DestoryLinkedList : destory the linked list
+ * @func DestroyLinkedList : destroy the linked list
  * @param linkedList : the linked list [ LinkedList * ]
  */
-void DestoryLinkedList(LinkedList *linkedList) {
+void DestroyLinkedList(LinkedList *linkedList) {
   Node *node = linkedList->head;
   while (node != NULL) {
     Node *temp = node->next;

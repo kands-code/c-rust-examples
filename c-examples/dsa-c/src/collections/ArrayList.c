@@ -61,10 +61,10 @@ ArrayList *InitArrayListFromArray(const size_t len, ElemType elems[len]) {
 }
 
 /**
- * @func DestoryArrayList : destory the array list
+ * @func DestroyArrayList : destroy the array list
  * @param linkedList : the array list [ ArrayList * ]
  */
-void DestoryArrayList(ArrayList *arrayList) {
+void DestroyArrayList(ArrayList *arrayList) {
   if (arrayList != NULL) {
     free(arrayList->data);
     free(arrayList);

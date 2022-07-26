@@ -1,6 +1,5 @@
 #include <collections/LinkedList.h>
 #include <collections/utils.h>
-#include <stdio.h>
 
 int main(void) {
   ElemType elems[5] = {1, 3, 5, 7, 9};
@@ -12,6 +11,9 @@ int main(void) {
   PrintLinkedList(al);
 
   SetLinkedListElement(al, 12, 3);
+  PrintLinkedList(al);
+
+  InsertElementToLinkedList(al, 19, 3);
   PrintLinkedList(al);
 
   DestoryLinkedList(al);

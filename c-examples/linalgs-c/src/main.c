@@ -6,5 +6,7 @@ int main() {
 
   PrintMatrix(MatInverse(m));
 
+  DestroyMatrix(m);
+
   return 0;
 }

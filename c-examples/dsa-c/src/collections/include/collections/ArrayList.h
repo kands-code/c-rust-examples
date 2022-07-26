@@ -46,10 +46,10 @@ ArrayList *InitArrayListWithCapacity(const size_t capacity);
 ArrayList *InitArrayListFromArray(const size_t len, ElemType elems[len]);
 
 /**
- * @func DestoryArrayList : destory the array list
+ * @func DestroyArrayList : destroy the array list
  * @param linkedList : the array list [ ArrayList * ]
  */
-void DestoryArrayList(ArrayList *arrayList);
+void DestroyArrayList(ArrayList *arrayList);
 
 /**
  * @func GetArrayListElement : get the element at a specific position

@@ -109,9 +109,9 @@ void DestoryLinkedList(LinkedList *linkedList) {
 
 /**
  * @func GetLinkedListElement : get the element at a specific position
- * @param linkedList : the linked list [ LinkedList * ]
- * @param position   : the position    [ const size_t ]
- * @return           : the element     [ ElemType     ]
+ * @param linkedList : the linked list [ const LinkedList * ]
+ * @param position   : the position    [ const size_t       ]
+ * @return           : the element     [ ElemType           ]
  * @descript         : function will crash when the position
  *                     is out of the boundary
  */
@@ -126,6 +126,27 @@ ElemType GetLinkedListElement(const LinkedList *linkedList,
     h = h->next;
   }
   return h->val;
+}
+
+/**
+ * @func SetLinkedListElement : set the value of a specific position
+ * @param linkedList : the linked list [ LinkedList *   ]
+ * @param value      : the value       [ const ElemType ]
+ * @param position   : the position    [ const size_t   ]
+ * @descript         : function will crash when the position
+ *                     is out of the boundary
+ */
+void SetLinkedListElement(LinkedList *linkedList, const ElemType value,
+                          const size_t position) {
+  if (linkedList->size < position || position < 1) {
+    fprintf(stderr, "Out of the boundary!");
+    exit(1);
+  }
+  Node *h = linkedList->head;
+  for (size_t i = 0; i < position; ++i) {
+    h = h->next;
+  }
+  h->val = value;
 }
 
 /**

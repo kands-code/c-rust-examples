@@ -73,11 +73,11 @@ void DestoryArrayList(ArrayList *arrayList) {
 
 /**
  * @func GetArrayListElement : get the element at a specific position
- * @param arrayList : the array list [ ArrayList *  ]
- * @param position   : the position  [ const size_t ]
- * @return           : the element   [ ElemType     ]
- * @descript         : function will crash when the position
- *                     is out of the boundary
+ * @param arrayList : the array list [ const ArrayList *  ]
+ * @param position  : the position   [ const size_t       ]
+ * @return          : the element    [ ElemType           ]
+ * @descript        : function will crash when the position
+ *                    is out of the boundary
  */
 ElemType GetArrayListElement(const ArrayList *arrayList,
                              const size_t position) {
@@ -86,6 +86,23 @@ ElemType GetArrayListElement(const ArrayList *arrayList,
     exit(1);
   }
   return arrayList->data[position - 1];
+}
+
+/**
+ * @func SetArrayListElement : set the value of a specific position
+ * @param arrayList : the array list [ ArrayList *    ]
+ * @param value     : the value      [ const ElemType ]
+ * @param position  : the position   [ const size_t   ]
+ * @descript        : function will crash when the position
+ *                    is out of the boundary
+ */
+void SetArrayListElement(ArrayList *arrayList, const ElemType value,
+                         const size_t position) {
+  if (position > arrayList->size || position < 1) {
+    fprintf(stderr, "Out of the boundary!");
+    exit(1);
+  }
+  arrayList->data[position - 1] = value;
 }
 
 /**
@@ -194,15 +211,29 @@ void PrintArrayList(ArrayList *arrayList) {
   printf("\b\b]\n");
 }
 
-/** TODO
+/**
  * @func reverseArrayList : reverse a array list
  * @param arrayList : the array list          [ const ArrayList * ]
  * @return          : the reversed array list [ ArrayList *       ]
  */
-ArrayList *reverseArrayList(const ArrayList *arrayList);
+ArrayList *reverseArrayList(const ArrayList *arrayList) {
+  ArrayList *revArrayList = InitArrayListWithCapacity(arrayList->capacity);
+  for (size_t i = arrayList->size; i > 0; --i) {
+    InsertElementToArrayList(revArrayList, GetArrayListElement(arrayList, i),
+                             arrayList->size - i + 1);
+  }
+  return revArrayList;
+}
 
-/** TODO
+/**
  * @func reversedArrayList : reverse original array list
  * @param arrayList : the array list [ ArrayList * ]
  */
-void reversedArrayList(ArrayList *arrayList);
+void reversedArrayList(ArrayList *arrayList) {
+  for (size_t i = 1; i < arrayList->size / 2 + 1; ++i) {
+    ElemType temp = GetArrayListElement(arrayList, i);
+    SetArrayListElement(
+        arrayList, GetArrayListElement(arrayList, arrayList->size - i + 1), i);
+    SetArrayListElement(arrayList, temp, arrayList->size - i + 1);
+  }
+}

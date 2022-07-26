@@ -53,13 +53,24 @@ void DestoryArrayList(ArrayList *arrayList);
 
 /**
  * @func GetArrayListElement : get the element at a specific position
- * @param arrayList : the array list [ ArrayList *  ]
- * @param position   : the position  [ const size_t ]
- * @return           : the element   [ ElemType     ]
- * @descript         : function will crash when the position
- *                     is out of the boundary
+ * @param arrayList : the array list [ const ArrayList *  ]
+ * @param position  : the position   [ const size_t       ]
+ * @return          : the element    [ ElemType           ]
+ * @descript        : function will crash when the position
+ *                    is out of the boundary
  */
 ElemType GetArrayListElement(const ArrayList *arrayList, const size_t position);
+
+/**
+ * @func SetArrayListElement : set the value of a specific position
+ * @param arrayList : the array list [ ArrayList *    ]
+ * @param value     : the value      [ const ElemType ]
+ * @param position  : the position   [ const size_t   ]
+ * @descript        : function will crash when the position
+ *                    is out of the boundary
+ */
+void SetArrayListElement(ArrayList *arrayList, const ElemType value,
+                         const size_t position);
 
 /**
  * @func FindArrayListElement : get the element at a specific position

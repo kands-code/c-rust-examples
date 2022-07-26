@@ -1,17 +1,21 @@
 #include "ArrayList.h"
+#include "LinkedList.h"
 #include "utils.h"
 #include <stdio.h>
 
 int main(void) {
   ElemType elems[5] = {1, 3, 5, 7, 9};
 
-  ArrayList *al = InitArrayListFromArray(5, elems);
-  PrintArrayList(al);
+  LinkedList *al = InitLinkedListFromArray(5, elems);
+  PrintLinkedList(al);
 
-  RemoveElementFromArrayList(al, 1);
-  PrintArrayList(al);
+  reversedLinkedList(al);
+  PrintLinkedList(al);
 
-  DestoryArrayList(al);
+  SetLinkedListElement(al, 12, 3);
+  PrintLinkedList(al);
+
+  DestoryLinkedList(al);
 
   return 0;
 }

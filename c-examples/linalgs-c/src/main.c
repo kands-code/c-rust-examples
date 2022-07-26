@@ -1,5 +1,6 @@
-#include "linalgs.h"
 #include <stdio.h>
+
+#include "linalgs.h"
 
 int main() {
   Matrix *m = InitMatrixByInput();

@@ -7,6 +7,7 @@
  ************************************************************/
 
 #include "linalgs.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +24,7 @@
  * @descript        : function will return null for illegal size
  */
 Matrix *InitMatrix(int r, int c, double d) {
-  if (r < 1 || c < 1) { // size must greater equal than [1, 1]
+  if (r < 1 || c < 1) {  // size must greater equal than [1, 1]
     return NULL;
   }
 
@@ -66,7 +67,7 @@ Matrix *InitElemMatrix(int n) {
  *                             if size is smaller than array, truncate
  */
 Matrix *InitMatrixFromArray(int r, int c, int len, const double *arr) {
-  if (r < 1 || c < 1) { // size must greater equal than [1, 1]
+  if (r < 1 || c < 1) {  // size must greater equal than [1, 1]
     return NULL;
   }
 

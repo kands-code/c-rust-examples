@@ -1,6 +1,5 @@
-#include "ArrayList.h"
-#include "LinkedList.h"
-#include "utils.h"
+#include <collections/LinkedList.h>
+#include <collections/utils.h>
 #include <stdio.h>
 
 int main(void) {

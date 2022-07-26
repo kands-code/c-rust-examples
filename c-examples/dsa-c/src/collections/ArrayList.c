@@ -4,8 +4,8 @@
     Includes
  ================ */
 
-#include "ArrayList.h"
-#include "utils.h"
+#include "collections/ArrayList.h"
+#include "collections/utils.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

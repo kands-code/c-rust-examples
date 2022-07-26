@@ -4,8 +4,8 @@
     Includes
  ================ */
 
-#include "LinkedList.h"
-#include "utils.h"
+#include "collections/LinkedList.h"
+#include "collections/utils.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

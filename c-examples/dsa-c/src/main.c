@@ -16,7 +16,7 @@ int main(void) {
   InsertElementToLinkedList(al, 19, 3);
   PrintLinkedList(al);
 
-  DestoryLinkedList(al);
+  DestroyLinkedList(al);
 
   return 0;
 }

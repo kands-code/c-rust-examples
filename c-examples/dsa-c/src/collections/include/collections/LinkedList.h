@@ -6,8 +6,9 @@
     Includes
  ================ */
 
-#include "collections/utils.h"
 #include <stddef.h>
+
+#include "collections/utils.h"
 
 /** ================
     Linked List

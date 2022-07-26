@@ -7,7 +7,9 @@ set(CMAKE_C_FLAGS_DEBUG "-g")
 project(dsa-c C)
 
 add_subdirectory(collections)
+add_subdirectory(algorithms)
 
 add_executable(${PROJECT_NAME} main.c)
 
 target_link_libraries(${PROJECT_NAME} collections)
+target_link_libraries(${PROJECT_NAME} algorithms)

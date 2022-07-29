@@ -31,6 +31,7 @@ then
 fi
 cmake -S . -B ../output -DCMAKE_BUILD_TYPE=Debug \
                         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                        -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
                         -Wdev -Wdeprecated \
                         -G "$gen"
 if [ -f "$path"/../output/compile_commands.json ]

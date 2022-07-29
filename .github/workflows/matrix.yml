@@ -1,4 +1,4 @@
-name: linalgs
+name: matrix
 
 on:
   push:

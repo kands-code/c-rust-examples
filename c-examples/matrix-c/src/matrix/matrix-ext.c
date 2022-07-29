@@ -223,11 +223,11 @@ double MatAlgCofactor(Matrix *mat, int r, int c) {
 
 /**
  * @func MatAdjugate : get the adjugate of matrix
- * @param m          : the matrix          [ Matrix * ]
- * @return mat       : the adjugate matrix [ Matrix * ]
- * @descript         : the matrix must be squared;
- *                     the function will return NULL,
- *                     if the matrix has no adjugate
+ * @param m    : the matrix          [ Matrix * ]
+ * @return mat : the adjugate matrix [ Matrix * ]
+ * @descript   : the matrix must be squared;
+ *               the function will return NULL,
+ *               if the matrix has no adjugate
  */
 Matrix *MatAdjugate(Matrix *m) {
   if (m->size[0] != m->size[1]) {
@@ -250,14 +250,41 @@ Matrix *MatAdjugate(Matrix *m) {
 }
 
 /**
- * @func SolveLinearEqs : solve linear equations
- * @param A             : the coefficient matrix [ Matrix * ]
- * @param b             : the vector             [ Matrix * ]
- * @return s            : the solution           [ Matrix * ]
- * @descript            : b must be col vector
+ * @func LinearSolver : solve linear equations
+ * @param A  : the coefficient matrix [ Matrix * ]
+ * @param b  : the vector             [ Matrix * ]
+ * @return s : the solution           [ Matrix * ]
+ * @descript : b must be col vector
  */
-Matrix *SolveLinearEqs(Matrix *A, Matrix *b) {
-  return MatMul(MatInverse(A), b);
+Matrix *LinearSolver(Matrix *A, Matrix *b) { return MatMul(MatInverse(A), b); }
+
+/**
+ * @func JacobiLinearSolver : solve linear equations by jacobi iteration
+ * @param A  : the coefficient matrix [ Matrix * ]
+ * @param b  : the vector             [ Matrix * ]
+ * @param k  : number of iterations   [ int      ]
+ * @return s : the solution           [ Matrix * ]
+ */
+Matrix *JacobiLinearSolver(Matrix *A, Matrix *b, int k) {
+  Matrix *s = InitMatrix(A->size[0], 1, 0);
+  // x_i^{k+1} = -\sum_{n=1, n \ne m}^r (D_{m m}^{-1} R_{m n} x_n^{k})
+  //             + D_{m m }^{-1} b_m
+  for (int i = 0; i < k; ++i) {
+    for (int m = 0; m < A->size[0]; ++m) {
+      // the sum
+      double sum = 0;
+      for (int n = 0; n < A->size[1]; ++n) {
+        if (n != m) {
+          sum += (1 / GetMatrixVal(A, m, m)) * GetMatrixVal(A, m, n) *
+                 GetMatrixVal(s, n, 0);
+        }
+      }
+      SetMatrixVal(s, m, 0,
+                   -sum + (1 / GetMatrixVal(A, m, m)) * GetMatrixVal(b, m, 0));
+    }
+  }
+
+  return s;
 }
 
 /**

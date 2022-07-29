@@ -70,13 +70,22 @@ double MatAlgCofactor(Matrix *mat, int r, int c);
 Matrix *MatAdjugate(Matrix *m);
 
 /**
- * @func SolveLinearEqs : solve linear equations
- * @param A             : the coefficient matrix [ Matrix * ]
- * @param b             : the vector             [ Matrix * ]
- * @return s            : the solution           [ Matrix * ]
- * @descript            : b must be col vector
+ * @func LinearSolver : solve linear equations
+ * @param A  : the coefficient matrix [ Matrix * ]
+ * @param b  : the vector             [ Matrix * ]
+ * @return s : the solution           [ Matrix * ]
+ * @descript : b must be col vector
  */
-Matrix *SolveLinearEqs(Matrix *A, Matrix *b);
+Matrix *LinearSolver(Matrix *A, Matrix *b);
+
+/**
+ * @func JacobiLinearSolver : solve linear equations by jacobi iteration
+ * @param A  : the coefficient matrix [ Matrix * ]
+ * @param b  : the vector             [ Matrix * ]
+ * @param k  : number of iterations   [ int      ]
+ * @return s : the solution           [ Matrix * ]
+ */
+Matrix *JacobiLinearSolver(Matrix *A, Matrix *b, int k);
 
 /**
  * TODO

@@ -4,11 +4,18 @@
 #include "matrix.h"
 
 int main() {
-  Matrix *m = InitMatrixByInput();
+  Matrix *A = InitMatrixByInput();
+  Matrix *b = InitMatrixByInput();
 
-  PrintMatrix(MatInverse(m));
+  Matrix *jbres = JacobiLinearSolver(A, b, 300);
 
-  DestroyMatrix(m);
+  PrintMatrix(jbres);
+
+  // printf("%f\n", GetMatrixVal(A, 0, 0));
+
+  DestroyMatrix(A);
+  DestroyMatrix(b);
+  DestroyMatrix(jbres);
 
   return 0;
 }

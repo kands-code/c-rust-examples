@@ -1,8 +1,6 @@
-#pragma once
+// matrix.h -- matrix
 
-/************************************************************
- * Includes
- ************************************************************/
+#pragma once
 
 /************************************************************
  * Macros
@@ -84,15 +82,6 @@ Matrix *InitElemMatrix(int n);
 Matrix *InitMatrixFromArray(int r, int c, int len, const double *arr);
 
 /**
- * @func InitMatrixByInput : initialize a matrix by user input
- * @return mat             : the matrix [ Matrix * ]
- * @descript               : input element separate by blank character;
- *                           function will return wrong matrix,
- *                           if user do not follow the correct way of typing
- */
-Matrix *InitMatrixByInput();
-
-/**
  * @func DestroyMatrix : destroy matrix
  * @param mat          : the matrix [ Matrix * ]
  */
@@ -101,13 +90,6 @@ void DestroyMatrix(Matrix *mat);
 /************************************************************
  * Matrix tools
  ************************************************************/
-
-/**
- * @func PrintMatrixP : print the matrix with precision
- * @param mat         : the matrix    [ Matrix * ]
- * @param p           : the precision [ int      ]
- */
-void PrintMatrixP(Matrix *mat, int p);
 
 /**
  * @func PrintMatrix : print the matrix
@@ -207,23 +189,6 @@ Matrix *MatMul(Matrix *m1, Matrix *m2);
 Matrix *MatPow(Matrix *m, int n);
 
 /**
- * @func MatKronecker : the Kronecker product of m1 and m2
- * @param m1          : the first matrix  [ Matrix * ]
- * @param m2          : the second matrix [ Matrix * ]
- * @return p          : the product       [ Matrix * ]
- */
-Matrix *MatKronecker(Matrix *m1, Matrix *m2);
-
-/**
- * @func MatLUD : LU Decomposition
- * @param m     : the matrix [ Matrix * ]
- * @return res  : the result [ LUDR *   ]
- * @descript    : result contains R, L^-1,
- *                matrix must be squared
- */
-LUDR *MatLUD(Matrix *m);
-
-/**
  * @func MatTrace : get the trace of matrix
  * @param mat     : the matrix [ Matrix * ]
  * @return trace  : the trace  [ Matrix * ]
@@ -242,26 +207,6 @@ Matrix *MatTrace(Matrix *mat);
 double MatDeterminant(Matrix *m);
 
 /**
- * @func MatAlgCofactor : get the trace of matrix
- * @param mat           : the matrix              [ Matrix * ]
- * @param r             : the row                 [ int      ]
- * @param c             : the column              [ int      ]
- * @return algCofactor  : the algebraic cofactor  [ double   ]
- * @descript            : r and c start from 0
- */
-double MatAlgCofactor(Matrix *mat, int r, int c);
-
-/**
- * @func MatAdjugate : get the adjugate of matrix
- * @param m          : the matrix          [ Matrix * ]
- * @return mat       : the adjugate matrix [ Matrix * ]
- * @descript         : the matrix must be squared;
- *                     the function will return NULL,
- *                     if the matrix has no adjugate
- */
-Matrix *MatAdjugate(Matrix *m);
-
-/**
  * @func MatInverse : get the inverse of matrix
  * @param m         : the matrix         [ Matrix * ]
  * @return mat      : the inverse matrix [ Matrix * ]
@@ -270,25 +215,3 @@ Matrix *MatAdjugate(Matrix *m);
  *                    if the matrix has no inverse
  */
 Matrix *MatInverse(Matrix *m);
-
-/**
- * @func SolveLinearEqs : solve linear equations
- * @param A             : the coefficient matrix [ Matrix * ]
- * @param b             : the vector             [ Matrix * ]
- * @return s            : the solution           [ Matrix * ]
- * @descript            : b must be col vector
- */
-Matrix *SolveLinearEqs(Matrix *A, Matrix *b);
-
-/**
- * TODO
- * @func SolveEigs : solve the eigen system of matrix
- * @param mat      : the matrix       [ Matrix *  ]
- * @return sys     : the eigen system [ Matrix ** ]
- */
-Matrix **SolveEigs(Matrix *mat);
-
-// TODO
-// Need more decomposition functions
-
-// Vector is matrix! No need more functions

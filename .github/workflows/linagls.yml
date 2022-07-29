@@ -20,13 +20,13 @@ jobs:
 
       - name: build
         run: |
-          cd "$PWD"/c-examples/linalgs-c/src
+          cd "$PWD"/c-examples/matrix-c/src
           . build.sh
 
       - name: pack
         run: |
-          zip -jq libs.zip "$PWD"/c-examples/linalgs-c/output/liblinalgs.a "$PWD"/c-examples/linalgs-c/src/linalgs.h
-          zip -jq src.zip "$PWD"/c-examples/linalgs-c/src/linalgs.c "$PWD"/c-examples/linalgs-c/src/linalgs.h
+          zip -jq libs.zip "$PWD/c-examples/matrix-c/output/matrix/libmatrix.a" "$PWD/c-examples/matrix-c/src/matrix/include/matrix.h" "$PWD/c-examples/matrix-c/src/matrix/include/matrix-ext.h"
+          zip -jq src.zip "$PWD/c-examples/matrix-c/src/matrix/matrix.c" "$PWD/c-examples/matrix-c/src/matrix/matrix-ext.c" "$PWD/c-examples/matrix-c/src/matrix/include/matrix.h" "$PWD/c-examples/matrix-c/src/matrix/include/matrix-ext.h"
 
       - name: release
         uses: softprops/action-gh-release@v1

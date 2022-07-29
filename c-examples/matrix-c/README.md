@@ -9,8 +9,8 @@ If something wrong, please tell me.
 ## Simple Examples
 
 ```c
-#include "matrix-ext.h"
-#include "matrix.h"
+#include "matrix/matrix-ext.h"
+#include "matrix/matrix.h"
 #include <stdio.h>
 
 int main() {

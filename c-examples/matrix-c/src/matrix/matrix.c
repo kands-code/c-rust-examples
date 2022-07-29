@@ -6,12 +6,12 @@
  * Includes
  ************************************************************/
 
-#include "matrix.h"
+#include "matrix/matrix.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "matrix-ext.h"
+#include "matrix/matrix-ext.h"
 
 /************************************************************
  * Init the matrix

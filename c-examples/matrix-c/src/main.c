@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "matrix-ext.h"
-#include "matrix.h"
+#include "matrix/matrix-ext.h"
+#include "matrix/matrix.h"
 
 int main() {
   Matrix *A = InitMatrixByInput();

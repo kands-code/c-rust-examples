@@ -25,8 +25,17 @@ jobs:
 
       - name: pack
         run: |
-          zip -jq libs.zip "$PWD/c-examples/matrix-c/output/matrix/libmatrix.a" "$PWD/c-examples/matrix-c/src/matrix/include/matrix.h" "$PWD/c-examples/matrix-c/src/matrix/include/matrix-ext.h"
-          zip -jq src.zip "$PWD/c-examples/matrix-c/src/matrix/matrix.c" "$PWD/c-examples/matrix-c/src/matrix/matrix-ext.c" "$PWD/c-examples/matrix-c/src/matrix/include/matrix.h" "$PWD/c-examples/matrix-c/src/matrix/include/matrix-ext.h"
+          mkdir libs
+          cp "$PWD/c-examples/matrix-c/output/matrix/libmatrix.a" libs/
+          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r libs/
+          zip -Jqr libs.zip libs/
+          rm -r libs/
+          mkdir src
+          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r src/
+          cp "$PWD/c-examples/matrix-c/src/matrix/matrix.c" libs/
+          cp "$PWD/c-examples/matrix-c/src/matrix/matrix-ext.c" libs/
+          zip -Jqr src.zip src/
+          rm -r src/
 
       - name: release
         uses: softprops/action-gh-release@v1

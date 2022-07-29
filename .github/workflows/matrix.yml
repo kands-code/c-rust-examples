@@ -25,17 +25,17 @@ jobs:
 
       - name: pack
         run: |
-          mkdir "$PWD/libs"
-          cp "$PWD/c-examples/matrix-c/output/matrix/libmatrix.a" "$PWD/libs/"
-          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r "$PWD/libs/"
-          zip -Jqr libs.zip "$PWD/libs/"
-          rm -r "$PWD/libs"
-          mkdir "$PWD/src"
-          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r "$PWD/src/"
-          cp "$PWD/c-examples/matrix-c/src/matrix/matrix.c" "$PWD/src/"
-          cp "$PWD/c-examples/matrix-c/src/matrix/matrix-ext.c" "$PWD/src/"
-          zip -Jqr src.zip "$PWD/src/"
-          rm -r "$PWD/src"
+          mkdir libs
+          cp "$PWD/c-examples/matrix-c/output/matrix/libmatrix.a" libs/
+          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r libs/
+          zip -Jqr libs.zip libs/
+          rm -r libs
+          mkdir src
+          cp "$PWD/c-examples/matrix-c/src/matrix/include/matrix" -r src/
+          cp "$PWD/c-examples/matrix-c/src/matrix/matrix.c" src/
+          cp "$PWD/c-examples/matrix-c/src/matrix/matrix-ext.c" src/
+          zip -Jqr src.zip src/
+          rm -r src
 
       - name: release
         uses: softprops/action-gh-release@v1
